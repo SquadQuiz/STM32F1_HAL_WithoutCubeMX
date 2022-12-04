@@ -1,0 +1,38 @@
+{
+    "configurations": [
+        {
+            "name": "STM32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/CMSIS/Include",
+                "${workspaceFolder}/CMSIS/Device",
+                "${workspaceFolder}/HAL/STM32F1xx_HAL_Driver/Inc",
+                "${workspaceFolder}/HAL/STM32F1xx_HAL_Driver/Inc/Legacy",
+                "${workspaceFolder}/Peripherals/Inc",
+                "${workspaceFolder}/Core/Inc",
+                "C:\\Program Files\\STMicroelectronics\\STM32CubeIDE_1.8.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127\\tools\\arm-none-eabi\\include",
+                "C:\\Program Files\\STMicroelectronics\\STM32CubeIDE_1.8.0\\\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127\\tools\\arm-none-eabi\\include\\newlib-nano",
+                "C:\\Program Files\\STMicroelectronics\\STM32CubeIDE_1.8.0\\\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127\\tools\\lib\\gcc\\arm-none-eabi\\10.3.1\\include",
+                "C:\\Program Files\\STMicroelectronics\\STM32CubeIDE_1.8.0\\\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127\\tools\\lib\\gcc\\arm-none-eabi\\10.3.1\\include-fixed"
+            ],
+            "defines": [
+                "DEBUG",
+                "STM32F103xB",
+                "USE_HAL_DRIVER"
+            ],
+            "cStandard": "gnu17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "${default}",
+            "mergeConfigurations": false,
+            "compilerPath": "C:\\Program Files\\STMicroelectronics\\STM32CubeIDE_1.8.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127\\tools\\bin\\arm-none-eabi-gcc.exe",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/**"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}

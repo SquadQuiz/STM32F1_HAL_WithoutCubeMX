@@ -1,4 +1,5 @@
 /.settings
 /build
 /debug
-/.vscode
+/.vscode/settings.json
+/.vscode/tasks.json
