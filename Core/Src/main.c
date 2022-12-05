@@ -6,11 +6,14 @@
  */
 
 #include "main.h"
+#include "rcc.h"
 
 int main(void)
 {
 
 	HAL_Init();
+
+	rcc_systemClockConfig();
 
 	while(1)
 	{

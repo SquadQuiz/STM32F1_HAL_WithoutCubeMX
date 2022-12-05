@@ -57,6 +57,8 @@ set(sources_SRCS
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_usart.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
+    # Peripherals
+    ${PROJ_PATH}/Peripherals/Src/rcc.c
     # Startup
     ${PROJ_PATH}/Startup/startup_stm32f103xb.s
 
