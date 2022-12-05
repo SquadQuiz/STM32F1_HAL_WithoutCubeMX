@@ -12,7 +12,7 @@
 #include "stm32f1xx_hal.h"
 
 /* C Standard Header files */
-#include <stdio.h>
+#include <stdio.h> // printf
 #include <stdbool.h>
 #include <stdint.h>
 

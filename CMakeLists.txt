@@ -39,6 +39,7 @@ set(sources_SRCS
     # Put here your source files, one in each line, relative to CMakeLists.txt file location
     # Core Source files
     ${PROJ_PATH}/Core/Src/main.c
+    ${PROJ_PATH}/Core/Src/printf_redirect.c
     ${PROJ_PATH}/Core/Src/stm32f1xx_it.c
     ${PROJ_PATH}/Core/Src/system_stm32f1xx.c
     # HAL Driver
@@ -59,6 +60,7 @@ set(sources_SRCS
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
     # Peripherals
     ${PROJ_PATH}/Peripherals/Src/rcc.c
+    ${PROJ_PATH}/Peripherals/Src/uart.c
     # Startup
     ${PROJ_PATH}/Startup/startup_stm32f103xb.s
 
