@@ -8,6 +8,7 @@
 #include "main.h"
 #include "rcc.h"
 #include "uart.h"
+#include "gpio.h"
 
 int main(void)
 {
@@ -21,6 +22,9 @@ int main(void)
 	uart_UART1_GPIO_config();
 	uart_UART1_config();
 
+	//* GPIO Peripheral
+	gpio_LED_config();
+
 	printf("Program is Starting...\n");
 
 	int counter = 0;
@@ -28,7 +32,9 @@ int main(void)
 	{
 		counter++;
 		printf("Hello (%.4f), Counter %d\n", 12.45885, counter);
-		HAL_Delay(1000);
+		HAL_Delay(100);
+		gpio_LED_toggleLED();
+		HAL_Delay(100);
 	}
 
 }
