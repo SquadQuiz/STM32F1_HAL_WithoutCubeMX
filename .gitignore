@@ -1,5 +1,5 @@
 /.settings
 /build
 /debug
-/.vscode/settings.json
-/.vscode/tasks.json
+# /.vscode/settings.json
+# /.vscode/tasks.json
