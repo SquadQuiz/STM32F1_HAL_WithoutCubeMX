@@ -24,6 +24,7 @@ int main(void)
 
 	//* GPIO Peripheral
 	gpio_LED_config();
+	gpio_PB_config();
 
 	printf("Program is Starting...\n");
 
@@ -32,9 +33,8 @@ int main(void)
 	{
 		counter++;
 		printf("Hello (%.4f), Counter %d\n", 12.45885, counter);
-		HAL_Delay(100);
-		gpio_LED_toggleLED();
-		HAL_Delay(100);
+		gpio_LED_writeLED(gpio_PB_read());
+		HAL_Delay(250);
 	}
 
 }

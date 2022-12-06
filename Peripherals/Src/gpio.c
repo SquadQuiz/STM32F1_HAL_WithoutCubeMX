@@ -35,3 +35,21 @@ void gpio_LED_toggleLED(void)
 {
 	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 }
+
+void gpio_PB_config(void)
+{
+	GPIO_InitTypeDef gpioInitStruct = {0};
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+
+	gpioInitStruct.Pin = GPIO_PIN_0;						// GPIOA-0
+	gpioInitStruct.Mode = GPIO_MODE_INPUT;			// Input Mode
+	gpioInitStruct.Pull = GPIO_NOPULL;					// No Pull
+	gpioInitStruct.Speed = GPIO_SPEED_FREQ_LOW; // Speed Low
+	HAL_GPIO_Init(GPIOA, &gpioInitStruct);
+}
+
+bool gpio_PB_read(void)
+{
+	// return input port pin value
+	return (bool)HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0); 
+}
