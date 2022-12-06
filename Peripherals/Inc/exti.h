@@ -12,6 +12,7 @@
 
 /**
  * @brief Push button EXTI Configuration PA0
+ ** Push Button -> PA0
  */
 void exti_button_config(void);
 

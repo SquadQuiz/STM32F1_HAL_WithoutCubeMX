@@ -16,18 +16,18 @@ void gpio_LED_config(void)
 	 */
 
 	GPIO_InitTypeDef gpioInitStruct = {0};
-	__HAL_RCC_GPIOC_CLK_ENABLE();
-	__HAL_RCC_GPIOB_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE(); 									// Enable GPIOB Clock
+	__HAL_RCC_GPIOC_CLK_ENABLE(); 									// Enable GPIOC Clock
 
-	//* LED Green Initialize
-	gpioInitStruct.Pin = GPIO_PIN_13;						// GPIO C13
-	gpioInitStruct.Mode = GPIO_MODE_OUTPUT_PP;	// Output Push-Pull
-	gpioInitStruct.Pull = GPIO_NOPULL;					// Pin No Pull
-	gpioInitStruct.Speed = GPIO_SPEED_FREQ_LOW; // Speed Low
+	//* LED Green GPIO Initialization
+	gpioInitStruct.Pin = GPIO_PIN_13;								// GPIO PC13
+	gpioInitStruct.Mode = GPIO_MODE_OUTPUT_PP;			// Output Push-Pull
+	gpioInitStruct.Pull = GPIO_NOPULL;							// Pin No Pull
+	gpioInitStruct.Speed = GPIO_SPEED_FREQ_LOW; 		// Speed Low
 	HAL_GPIO_Init(GPIOC, &gpioInitStruct);
 
-	//* LED Red/Orange Initialize
-	gpioInitStruct.Pin = GPIO_PIN_13 | GPIO_PIN_14; // GPIO B13,B14
+	//* LED Red/Orange GPIO Initialization
+	gpioInitStruct.Pin = GPIO_PIN_13 | GPIO_PIN_14; // GPIO PB13,PB14
 	gpioInitStruct.Mode = GPIO_MODE_OUTPUT_PP;			// Output Push-Pull
 	gpioInitStruct.Pull = GPIO_NOPULL;							// Pin No Pull
 	gpioInitStruct.Speed = GPIO_SPEED_FREQ_LOW;			// Speed Low
@@ -78,10 +78,11 @@ void gpio_PB_config(void)
 	GPIO_InitTypeDef gpioInitStruct = {0};
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 
-	gpioInitStruct.Pin = GPIO_PIN_0;						// GPIO A0
-	gpioInitStruct.Mode = GPIO_MODE_INPUT;			// Input Mode
-	gpioInitStruct.Pull = GPIO_NOPULL;					// No Pull
-	gpioInitStruct.Speed = GPIO_SPEED_FREQ_LOW; // Speed Low
+	//* Push Button GPIO Initialization
+	gpioInitStruct.Pin = GPIO_PIN_0;							// GPIO PA0
+	gpioInitStruct.Mode = GPIO_MODE_INPUT;				// Input Mode
+	gpioInitStruct.Pull = GPIO_NOPULL;						// No Pull
+	gpioInitStruct.Speed = GPIO_SPEED_FREQ_LOW; 	// Speed Low
 	HAL_GPIO_Init(GPIOA, &gpioInitStruct);
 }
 
@@ -100,7 +101,8 @@ void gpio_SW_config(void)
 	GPIO_InitTypeDef gpioInitStruct = {0};
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 
-	gpioInitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_15; // GPIO A8,A15
+	//* Switches GPIO Initialization
+	gpioInitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_15; // GPIO PA8,PA15
 	gpioInitStruct.Mode = GPIO_MODE_INPUT;				 // Input Mode
 	gpioInitStruct.Pull = GPIO_NOPULL;						 // No Pull
 	gpioInitStruct.Speed = GPIO_SPEED_FREQ_LOW;		 // Speed Low

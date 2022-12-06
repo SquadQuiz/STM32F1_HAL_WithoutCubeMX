@@ -32,17 +32,20 @@ int main(void)
 	gpio_SW_config();
 
 	//* EXTI Peripheral
-	exti_button_config();
+	// exti_button_config();
 
 	//* ADC Peripheral
+	adc_GPIO_config();
+	adc_singleChannel_config(ADC_SingleSelect_Potentiometer);
+	uint16_t adcValue;
 
 	printf("Program is Starting...\n");
 
-	int counter = 0;
+	// int counter = 0;
 	while(1)
 	{
-		counter++;
-		printf("Hello (%.4f), Counter %d\n", 12.45885, counter);
+		// counter++;
+		// printf("Hello (%.4f), Counter %d\n", 12.45885, counter);
 
 		//* LED
 		// gpio_LED_toggleOrange();
@@ -57,20 +60,30 @@ int main(void)
 		// HAL_Delay(250);
 
 		//* Switches
-		gpio_LED_writeOrange(gpio_SW1_read());
-		gpio_LED_writeRed(gpio_SW2_read());
-		if(buttonInterrupt)
+		// gpio_LED_writeOrange(gpio_SW1_read());
+		// gpio_LED_writeRed(gpio_SW2_read());
+		// if(buttonInterrupt)
+		// {
+		// 	buttonInterrupt = false;
+		// 	printf("EXTI0 - Gernated Interrupt\n");
+		// 	//User Code....
+		// 	//Unmask
+		// 	HAL_Delay(10);
+		// 	EXTI->IMR &= ~(1UL << 0);
+		// }
+		// HAL_Delay(250);
+
+		//* ADC Potentiometer
+		HAL_ADC_Start(&adc1Handle);
+		if(HAL_ADC_PollForConversion(&adc1Handle, 10) == HAL_OK)
 		{
-			buttonInterrupt = false;
-			printf("EXTI0 - Gernated Interrupt\n");
-			//User Code....
-			//Unmask
-			HAL_Delay(10);
-			EXTI->IMR &= ~(1UL << 0);
+			//* Read ADC Value
+			adcValue = HAL_ADC_GetValue(&adc1Handle);
+			printf("ADC Value = %d\n", adcValue);
+			gpio_LED_toggleGreen();
 		}
 		HAL_Delay(250);
 	}
-
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)

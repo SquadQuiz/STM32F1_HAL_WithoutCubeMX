@@ -12,6 +12,9 @@
 
 /**
  * @brief LEDs GPIO Configuration
+ ** LED Green  -> PC13
+ ** LED Red    -> PB13
+ ** LED Orange -> PB14
  */
 void gpio_LED_config(void);
 
@@ -53,20 +56,21 @@ void gpio_LED_toggleRed(void);
 
 /**
  * @brief Push Button Configuration PA0
- * 
+ ** Push Button -> PA0
  */
 void gpio_PB_config(void);
 
 /**
   * @brief Push Button ReadPin State PA0
+  * 
   * @retval The input port pin value.
   */
 bool gpio_PB_read(void);
 
 /**
  * @brief Switches 2P GPIO Configuration
- * Switch P1 -> PA8
- * Switch P2 -> PA15
+ ** Switch P1 -> PA8
+ ** Switch P2 -> PA15
  */
 void gpio_SW_config(void);
 

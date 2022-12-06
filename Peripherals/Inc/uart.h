@@ -15,6 +15,8 @@ extern UART_HandleTypeDef huart1;
 
 /**
  * @brief UART GPIO Configuration
+ ** UART1 Tx -> PA9
+ ** UART1 Rx -> PA10
  */
 void uart_UART1_GPIO_config(void);
 
