@@ -9,6 +9,9 @@
 #include "rcc.h"
 #include "uart.h"
 #include "gpio.h"
+#include "exti.h"
+
+bool buttonInterrupt = false;
 
 int main(void)
 {
@@ -26,6 +29,9 @@ int main(void)
 	gpio_LED_config();
 	gpio_PB_config();
 	gpio_SW_config();
+
+	//* EXTI 
+	exti_buttonConfig();
 
 	printf("Program is Starting...\n");
 
@@ -50,7 +56,26 @@ int main(void)
 		//* Switches
 		gpio_LED_writeOrange(gpio_SW1_read());
 		gpio_LED_writeRed(gpio_SW2_read());
+		if(buttonInterrupt)
+		{
+			buttonInterrupt = false;
+			printf("EXTI0 - Gernated Interrupt\n");
+			//User Code....
+			//Unmask
+			HAL_Delay(10);
+			EXTI->IMR &= ~(1UL << 0);
+		}
 		HAL_Delay(250);
 	}
 
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin == GPIO_PIN_0)
+	{
+		buttonInterrupt = true;
+		//Mask Interrupt
+		EXTI->IMR &= ~(1UL << 0);
+	}
 }
