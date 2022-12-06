@@ -10,6 +10,7 @@
 #include "uart.h"
 #include "gpio.h"
 #include "exti.h"
+#include "adc.h"
 
 bool buttonInterrupt = false;
 
@@ -30,8 +31,10 @@ int main(void)
 	gpio_PB_config();
 	gpio_SW_config();
 
-	//* EXTI 
-	exti_buttonConfig();
+	//* EXTI Peripheral
+	exti_button_config();
+
+	//* ADC Peripheral
 
 	printf("Program is Starting...\n");
 

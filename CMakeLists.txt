@@ -43,6 +43,8 @@ set(sources_SRCS
     ${PROJ_PATH}/Core/Src/stm32f1xx_it.c
     ${PROJ_PATH}/Core/Src/system_stm32f1xx.c
     # HAL Driver
+    ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c
+    ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c
@@ -59,6 +61,7 @@ set(sources_SRCS
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_usart.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
     # Peripherals
+    ${PROJ_PATH}/Peripherals/Src/adc.c
     ${PROJ_PATH}/Peripherals/Src/exti.c
     ${PROJ_PATH}/Peripherals/Src/rcc.c
     ${PROJ_PATH}/Peripherals/Src/uart.c
