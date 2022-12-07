@@ -138,10 +138,24 @@ void adc_dma_config(void)
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
 }
 
+bool adc_AWDG_config(ADC_SingleSelect_e channel)
+{
+  ADC_AnalogWDGConfTypeDef awdgConfig = {0};
+  awdgConfig.WatchdogMode = ADC_ANALOGWATCHDOG_SINGLE_REG;       // Single regular mode
+  //* 12-bit ADC, Value between 0 - 4095
+  awdgConfig.HighThreshold = 4000;                               // High Threshold
+  awdgConfig.LowThreshold = 1000;                                // Low Threshold
+  awdgConfig.Channel = channel;                                  // Pot,Joy-X,Joy-Y
+  awdgConfig.ITMode = ENABLE;                                    // Enable AWDG Interrupt
+  if(HAL_ADC_AnalogWDGConfig(&adc1Handle, &awdgConfig) != HAL_OK)
+  {
+    return false;
+  }
 
+  //* Enable ADC AWDG Interrupt
+  __HAL_ADC_ENABLE_IT(&adc1Handle, ADC_IT_AWD);                   // Enable AWDG Interrupt
+  HAL_NVIC_SetPriority(ADC1_2_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(ADC1_2_IRQn);
 
-
-
-
-
-
+  return true;
+}

@@ -20,10 +20,10 @@ void EXTI0_IRQHandler(void)
 }
 
 //* Disabled when use ADC Multi-channel with DMA
-// void ADC1_2_IRQHandler(void)
-// {
-// 	HAL_ADC_IRQHandler(&adc1Handle);
-// }
+void ADC1_2_IRQHandler(void)
+{
+	HAL_ADC_IRQHandler(&adc1Handle);
+}
 
 void DMA1_Channel1_IRQHandler(void)
 {

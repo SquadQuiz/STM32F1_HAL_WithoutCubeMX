@@ -61,6 +61,14 @@ bool adc_multiChannel_config(void);
  */
 void adc_dma_config(void);
 
+/**
+ * @brief ADC AWDG Configuration
+ * 
+ * @param channel 
+ * @return true 
+ */
+bool adc_AWDG_config(ADC_SingleSelect_e channel);
+
 #endif /* INC_ADC_H_ */
 
 

@@ -15,6 +15,7 @@
 
 bool buttonInterrupt = false;
 bool adcEOCFlag = false;
+bool adcAWDGFlag = false;
 
 uint16_t adcValues[3];
 
@@ -47,13 +48,15 @@ int main(void)
 	//* ADC with Timer Trigger
 	tim_TIM3_config(50);
 	HAL_TIM_Base_Start(&htim3);
+	//* ADC with ADWG IT
+	adc_AWDG_config(ADC_SingleSelect_Potentiometer);
 
 	printf("Program is Starting...\r\n");
 
 	while(1)
 	{
 		//* Multi Channel ADC
-		if(adcEOCFlag)
+		if (adcEOCFlag)
 		{
 			adcEOCFlag = false;
 			//* Read/Get ADC Values
@@ -62,6 +65,13 @@ int main(void)
 			printf(" PA2 Joy-X = %d\r\n", adcValues[1]);
 			printf(" PA3 Joy-Y = %d\r\n", adcValues[2]);
 			gpio_LED_toggleGreen();
+
+			if (adcAWDGFlag)
+			{
+				adcAWDGFlag = false;
+				printf("ADC Watchdog Threshold Triggered!\r\n");
+				HAL_Delay(500);
+			}
 		}
 	}
 }
@@ -89,4 +99,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
 	adcEOCFlag = true;
+}
+
+/**
+ * @brief ADC Analog Watchdog Interrupt Callback Functiopn
+ * 
+ * @param hadc 
+ */
+void HAL_ADC_LevelOutOfWindowCallback(ADC_HandleTypeDef *hadc)
+{
+	if(hadc->Instance == ADC1)
+	{
+		adcAWDGFlag = true;
+	}
 }
