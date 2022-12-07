@@ -19,7 +19,13 @@ void EXTI0_IRQHandler(void)
 	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
 }
 
-void ADC1_2_IRQHandler(void)
+//* Disabled when use ADC Multi-channel with DMA
+// void ADC1_2_IRQHandler(void)
+// {
+// 	HAL_ADC_IRQHandler(&adc1Handle);
+// }
+
+void DMA1_Channel1_IRQHandler(void)
 {
-	HAL_ADC_IRQHandler(&adc1Handle);
+	HAL_DMA_IRQHandler(adc1Handle.DMA_Handle);
 }

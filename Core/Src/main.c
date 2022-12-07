@@ -15,6 +15,8 @@
 bool buttonInterrupt = false;
 bool adcEOCFlag = false;
 
+uint16_t adcValues[3];
+
 int main(void)
 {
 
@@ -36,67 +38,27 @@ int main(void)
 	// exti_button_config();
 
 	//* ADC Peripheral
-	uint16_t adcValue;
+	//* ADC Multi-channel
 	adc_GPIO_config();
-	adc_singleChannel_config(ADC_SingleSelect_Potentiometer);
-	//* ADC Interrupt
-	adc_Interrupt_config();
-	HAL_ADC_Start_IT(&adc1Handle);
+	adc_multiChannel_config();
+	adc_dma_config();
+	HAL_ADC_Start_DMA(&adc1Handle, (uint32_t *)adcValues, 3);
 
 	printf("Program is Starting...\r\n");
 
-	// int counter = 0;
 	while(1)
 	{
-		// counter++;
-		// printf("Hello (%.4f), Counter %d\n", 12.45885, counter);
-
-		//* LED
-		// gpio_LED_toggleOrange();
-		// HAL_Delay(100);
-		// gpio_LED_toggleRed();
-		// HAL_Delay(100);
-
-		//* Push Button
-		// gpio_LED_writeOrange(gpio_PB_read());
-		// HAL_Delay(250);
-		// gpio_LED_toggleRed();
-		// HAL_Delay(250);
-
-		//* Switches
-		// gpio_LED_writeOrange(gpio_SW1_read());
-		// gpio_LED_writeRed(gpio_SW2_read());
-		// if(buttonInterrupt)
-		// {
-		// 	buttonInterrupt = false;
-		// 	printf("EXTI0 - Gernated Interrupt\n");
-		// 	//User Code....
-		// 	//Unmask
-		// 	HAL_Delay(10);
-		// 	EXTI->IMR &= ~(1UL << 0);
-		// }
-		// HAL_Delay(250);
-
-		//* ADC Single Channel *Potentiometer*
-		// HAL_ADC_Start(&adc1Handle);
-		// if(HAL_ADC_PollForConversion(&adc1Handle, 10) == HAL_OK)
-		// {
-		// 	//* Read ADC Value
-		// 	adcValue = HAL_ADC_GetValue(&adc1Handle);
-		// 	printf("ADC Value = %d\r\n", adcValue);
-		// 	gpio_LED_toggleGreen();
-		// }
-		// HAL_Delay(250);
-
-		//* ADC Interrupt 
+		//* Multi Channel ADC
 		if(adcEOCFlag)
 		{
 			adcEOCFlag = false;
-			//* Read/Get ADC Value
-			adcValue = HAL_ADC_GetValue(&adc1Handle);
-			printf("ADC Value = %d\r\n", adcValue);
+			//* Read/Get ADC Values
+			printf("ADC Values : \r\n");
+			printf(" PA1 Pot   = %d\r\n", adcValues[0]);
+			printf(" PA2 Joy-X = %d\r\n", adcValues[1]);
+			printf(" PA3 Joy-Y = %d\r\n", adcValues[2]);
 			gpio_LED_toggleGreen();
-			HAL_ADC_Start_IT(&adc1Handle);
+			HAL_ADC_Start_DMA(&adc1Handle, (uint32_t *)adcValues, 3);
 		}
 		HAL_Delay(250);
 	}

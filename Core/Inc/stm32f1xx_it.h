@@ -23,4 +23,9 @@ void EXTI0_IRQHandler(void);
  */
 void ADC1_2_IRQHandler(void);
 
+/**
+ * @brief ADC1 -> DMA1 Callback
+ */
+void DMA1_Channel1_IRQHandler(void);
+
 #endif /* INC_STM32F1XX_IT_H_ */
