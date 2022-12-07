@@ -19,7 +19,6 @@ void adc_GPIO_config(void)
    * Joystick-Y    -> PA3
   */  
 
-
   GPIO_InitTypeDef gpioInitStruct = {0};
   __HAL_RCC_GPIOA_CLK_ENABLE();                               // Enable GPIOA Clock
 
@@ -66,7 +65,7 @@ bool adc_singleChannel_config(ADC_SingleSelect_e channel)
 
 void adc_Interrupt_config(void)
 {
-  __HAL_ADC_ENABLE_IT(&adc1Handle, ADC_IT_EOC);               // Enable ADC Interrupt mode
+  __HAL_ADC_ENABLE_IT(&adc1Handle, ADC_IT_EOC);                   // Enable ADC Interrupt mode
   HAL_NVIC_SetPriority(ADC1_2_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(ADC1_2_IRQn);
 }
@@ -156,6 +155,27 @@ bool adc_AWDG_config(ADC_SingleSelect_e channel)
   __HAL_ADC_ENABLE_IT(&adc1Handle, ADC_IT_AWD);                   // Enable AWDG Interrupt
   HAL_NVIC_SetPriority(ADC1_2_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(ADC1_2_IRQn);
+
+  return true;
+}
+
+bool adc_Injected_config(ADC_SingleSelect_e channel)
+{
+  ADC_InjectionConfTypeDef injectedConfig = {0};
+
+  //* ADC Injected Channel Configuration
+  injectedConfig.InjectedChannel = channel;                           // Pot,Joy-X,Joy-Y
+  injectedConfig.InjectedRank = ADC_INJECTED_RANK_1;                  // Rank 1
+  injectedConfig.InjectedNbrOfConversion = 1;                         // 1 Conversion
+  injectedConfig.InjectedSamplingTime = ADC_SAMPLETIME_28CYCLES_5;    // Sampling time = 28.5 Cycles
+  injectedConfig.ExternalTrigInjecConv = ADC_INJECTED_SOFTWARE_START; // Injected Software Start
+  injectedConfig.AutoInjectedConv = ENABLE;                           // Auto Injected
+  injectedConfig.InjectedDiscontinuousConvMode = DISABLE;             // Disable Discontinuous conversion
+  injectedConfig.InjectedOffset = 0;                                  // Offset = 0
+  if (HAL_ADCEx_InjectedConfigChannel(&adc1Handle, &injectedConfig) != HAL_OK)
+  {
+    return false;
+  }
 
   return true;
 }

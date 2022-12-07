@@ -44,12 +44,15 @@ int main(void)
 	adc_GPIO_config();
 	adc_multiChannel_config();
 	adc_dma_config();
-	HAL_ADC_Start_DMA(&adc1Handle, (uint32_t *)adcValues, 3);
-	//* ADC with Timer Trigger
-	tim_TIM3_config(50);
-	HAL_TIM_Base_Start(&htim3);
+	tim_TIM3_config(150); // 50 ms -> ADC Value not Equal
 	//* ADC with ADWG IT
 	adc_AWDG_config(ADC_SingleSelect_Potentiometer);
+	//* ADC Injected Channel
+	adc_Injected_config(ADC_SingleSelect_Potentiometer);
+	//* ADC with Timer Trigger
+
+	HAL_ADC_Start_DMA(&adc1Handle, (uint32_t *)adcValues, 3);
+	HAL_TIM_Base_Start(&htim3);
 
 	printf("Program is Starting...\r\n");
 
@@ -70,7 +73,14 @@ int main(void)
 			{
 				adcAWDGFlag = false;
 				printf("ADC Watchdog Threshold Triggered!\r\n");
-				HAL_Delay(500);
+			}
+
+			//* ADC Injected
+			HAL_ADCEx_InjectedStart(&adc1Handle);
+			if (HAL_ADCEx_InjectedPollForConversion(&adc1Handle, 150) == HAL_OK)
+			{
+				uint32_t adcInjectedValue = HAL_ADCEx_InjectedGetValue(&adc1Handle, ADC_INJECTED_RANK_1);
+				printf("ADC Injected Value = %d\r\n", (int)adcInjectedValue);
 			}
 		}
 	}
