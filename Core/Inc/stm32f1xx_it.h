@@ -9,13 +9,18 @@
 #define INC_STM32F1XX_IT_H_
 
 /**
- * @brief 
+ * @brief System Tick
  */
 void SysTick_Handler(void);
 
 /**
- * @brief EXTI0 Callback function
+ * @brief EXTI0 Callback 
  */
 void EXTI0_IRQHandler(void);
+
+/**
+ * @brief ADC Callback
+ */
+void ADC1_2_IRQHandler(void);
 
 #endif /* INC_STM32F1XX_IT_H_ */

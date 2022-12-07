@@ -86,7 +86,20 @@
                 "--connect",
                 "port=com12",
                 "--download", "${command:cmake.launchTargetPath}",
-                "-hardRst"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "CubeProg: Flash project via UART(COM4)",
+            "command": "STM32_Programmer_CLI",
+            "args": [
+                "--connect",
+                "port=com4",
+                "--download", "${command:cmake.launchTargetPath}",
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

@@ -7,6 +7,7 @@
 
 #include "main.h"
 #include "stm32f1xx_it.h"
+#include "adc.h"
 
 void SysTick_Handler(void)
 {
@@ -16,4 +17,9 @@ void SysTick_Handler(void)
 void EXTI0_IRQHandler(void)
 {
 	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+}
+
+void ADC1_2_IRQHandler(void)
+{
+	HAL_ADC_IRQHandler(&adc1Handle);
 }

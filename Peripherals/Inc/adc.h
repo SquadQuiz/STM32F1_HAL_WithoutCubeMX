@@ -41,6 +41,12 @@ void adc_GPIO_config(void);
  */
 bool adc_singleChannel_config(ADC_SingleSelect_e channel);
 
+/**
+ * @brief ADC Interrupt Module Configuration
+ * 
+ */
+void adc_Interrupt_config(void);
+
 #endif /* INC_ADC_H_ */
 
 

@@ -13,6 +13,7 @@
 #include "adc.h"
 
 bool buttonInterrupt = false;
+bool adcEOCFlag = false;
 
 int main(void)
 {
@@ -35,11 +36,14 @@ int main(void)
 	// exti_button_config();
 
 	//* ADC Peripheral
+	uint16_t adcValue;
 	adc_GPIO_config();
 	adc_singleChannel_config(ADC_SingleSelect_Potentiometer);
-	uint16_t adcValue;
+	//* ADC Interrupt
+	adc_Interrupt_config();
+	HAL_ADC_Start_IT(&adc1Handle);
 
-	printf("Program is Starting...\n");
+	printf("Program is Starting...\r\n");
 
 	// int counter = 0;
 	while(1)
@@ -73,19 +77,36 @@ int main(void)
 		// }
 		// HAL_Delay(250);
 
-		//* ADC Potentiometer
-		HAL_ADC_Start(&adc1Handle);
-		if(HAL_ADC_PollForConversion(&adc1Handle, 10) == HAL_OK)
+		//* ADC Single Channel *Potentiometer*
+		// HAL_ADC_Start(&adc1Handle);
+		// if(HAL_ADC_PollForConversion(&adc1Handle, 10) == HAL_OK)
+		// {
+		// 	//* Read ADC Value
+		// 	adcValue = HAL_ADC_GetValue(&adc1Handle);
+		// 	printf("ADC Value = %d\r\n", adcValue);
+		// 	gpio_LED_toggleGreen();
+		// }
+		// HAL_Delay(250);
+
+		//* ADC Interrupt 
+		if(adcEOCFlag)
 		{
-			//* Read ADC Value
+			adcEOCFlag = false;
+			//* Read/Get ADC Value
 			adcValue = HAL_ADC_GetValue(&adc1Handle);
-			printf("ADC Value = %d\n", adcValue);
+			printf("ADC Value = %d\r\n", adcValue);
 			gpio_LED_toggleGreen();
+			HAL_ADC_Start_IT(&adc1Handle);
 		}
 		HAL_Delay(250);
 	}
 }
 
+/**
+ * @brief GPIO EXTI Callback Function
+ * 
+ * @param GPIO_Pin 
+ */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin == GPIO_PIN_0)
@@ -94,4 +115,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		//Mask Interrupt
 		EXTI->IMR &= ~(1UL << 0);
 	}
+}
+
+/**
+ * @brief ADC Conversion Complete Callback Function
+ * 
+ * @param hadc Pointer to ADC Handle Typedef 
+ */
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+	adcEOCFlag = true;
 }

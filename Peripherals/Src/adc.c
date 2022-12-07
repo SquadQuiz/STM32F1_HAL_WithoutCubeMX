@@ -61,3 +61,10 @@ bool adc_singleChannel_config(ADC_SingleSelect_e channel)
 
   return true;
 }
+
+void adc_Interrupt_config(void)
+{
+  __HAL_ADC_ENABLE_IT(&adc1Handle, ADC_IT_EOC);               // Enable ADC Interrupt mode
+  HAL_NVIC_SetPriority(ADC1_2_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(ADC1_2_IRQn);
+}
