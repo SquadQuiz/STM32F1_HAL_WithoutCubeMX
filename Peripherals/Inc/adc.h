@@ -51,7 +51,7 @@ void adc_Interrupt_config(void);
  ** Potentiometer -> PA1
  ** Joystick-X    -> PA2
  ** Joystick-Y    -> PA3
- * @return : true 
+ * @retval true, false
  */
 bool adc_multiChannel_config(void);
 

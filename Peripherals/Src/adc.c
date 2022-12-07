@@ -7,7 +7,7 @@
 
 #include "adc.h"
 
-//* ADC1 Handle Typedef Global Variable
+//* Handle Typedef Global Variable
 ADC_HandleTypeDef adc1Handle;
 DMA_HandleTypeDef dmaHandle;
 
@@ -73,15 +73,15 @@ void adc_Interrupt_config(void)
 
 bool adc_multiChannel_config(void)
 {
-  __HAL_RCC_ADC1_CLK_ENABLE();                                // Ebable ADC1 Clock
+  __HAL_RCC_ADC1_CLK_ENABLE();                                     // Enable ADC1 Clock
   //* ADC Configuration
-  adc1Handle.Instance = ADC1;                                 // adc1Handle -> ADC1
-  adc1Handle.Init.DataAlign = ADC_DATAALIGN_RIGHT;            // Data Align Right
-  adc1Handle.Init.ScanConvMode = ADC_SCAN_ENABLE;             // Enable Scan mode
-  adc1Handle.Init.ContinuousConvMode = DISABLE;               // Disable Continuous Conversion
-  adc1Handle.Init.NbrOfConversion = 3;                        // Number of conversion = 3 
-  adc1Handle.Init.DiscontinuousConvMode = DISABLE;            // Disable Discontinuous Conversion
-  adc1Handle.Init.ExternalTrigConv = ADC_SOFTWARE_START;      // External Trigger Software Start
+  adc1Handle.Instance = ADC1;                                      // adc1Handle -> ADC1
+  adc1Handle.Init.DataAlign = ADC_DATAALIGN_RIGHT;                 // Data Align Right
+  adc1Handle.Init.ScanConvMode = ADC_SCAN_ENABLE;                  // Enable Scan mode
+  adc1Handle.Init.ContinuousConvMode = DISABLE;                    // Disable Continuous Conversion
+  adc1Handle.Init.NbrOfConversion = 3;                             // Number of conversion = 3
+  adc1Handle.Init.DiscontinuousConvMode = DISABLE;                 // Disable Discontinuous Conversion
+  adc1Handle.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T3_TRGO; // External Trigger via TIM3
   if(HAL_ADC_Init(&adc1Handle) != HAL_OK)
   {
     return false;

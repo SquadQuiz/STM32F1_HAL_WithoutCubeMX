@@ -24,8 +24,9 @@
         "stm32f1xx_hal.h": "c",
         "adc.h": "c",
         "exti.h": "c",
+        "gpio.h": "c",
         "rcc.h": "c",
+        "tim.h": "c",
         "uart.h": "c",
-        "gpio.h": "c"
     }
 }

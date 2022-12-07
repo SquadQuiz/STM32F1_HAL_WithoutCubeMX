@@ -63,9 +63,10 @@ set(sources_SRCS
     # Peripherals
     ${PROJ_PATH}/Peripherals/Src/adc.c
     ${PROJ_PATH}/Peripherals/Src/exti.c
-    ${PROJ_PATH}/Peripherals/Src/rcc.c
-    ${PROJ_PATH}/Peripherals/Src/uart.c
     ${PROJ_PATH}/Peripherals/Src/gpio.c
+    ${PROJ_PATH}/Peripherals/Src/rcc.c
+    ${PROJ_PATH}/Peripherals/Src/tim.c
+    ${PROJ_PATH}/Peripherals/Src/uart.c
     # Startup
     ${PROJ_PATH}/Startup/startup_stm32f103xb.s
 

@@ -7,7 +7,7 @@
 
 #include "uart.h"
 
-//* UART1 Handle Typedef Global Variable
+//* Handle Typedef Global Variable
 UART_HandleTypeDef huart1;
 
 /**

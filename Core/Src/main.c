@@ -11,6 +11,7 @@
 #include "gpio.h"
 #include "exti.h"
 #include "adc.h"
+#include "tim.h"
 
 bool buttonInterrupt = false;
 bool adcEOCFlag = false;
@@ -43,6 +44,9 @@ int main(void)
 	adc_multiChannel_config();
 	adc_dma_config();
 	HAL_ADC_Start_DMA(&adc1Handle, (uint32_t *)adcValues, 3);
+	//* ADC with Timer Trigger
+	tim_TIM3_config(50);
+	HAL_TIM_Base_Start(&htim3);
 
 	printf("Program is Starting...\r\n");
 
@@ -58,9 +62,7 @@ int main(void)
 			printf(" PA2 Joy-X = %d\r\n", adcValues[1]);
 			printf(" PA3 Joy-Y = %d\r\n", adcValues[2]);
 			gpio_LED_toggleGreen();
-			HAL_ADC_Start_DMA(&adc1Handle, (uint32_t *)adcValues, 3);
 		}
-		HAL_Delay(250);
 	}
 }
 
