@@ -36,53 +36,15 @@ int main(void)
 	gpio_PB_config();
 	gpio_SW_config();
 
-	//* EXTI Peripheral
-	// exti_button_config();
-
-	//* ADC Peripheral
-	//* ADC Multi-channel
-	adc_GPIO_config();
-	adc_multiChannel_config();
-	adc_dma_config();
-	tim_TIM3_config(150); // 50 ms -> ADC Value not Equal
-	//* ADC with ADWG IT
-	adc_AWDG_config(ADC_SingleSelect_Potentiometer);
-	//* ADC Injected Channel
-	adc_Injected_config(ADC_SingleSelect_Potentiometer);
-	//* ADC with Timer Trigger
-
-	HAL_ADC_Start_DMA(&adc1Handle, (uint32_t *)adcValues, 3);
-	HAL_TIM_Base_Start(&htim3);
+	//* TIM Peripheral
+	tim_TIM3_config(150);
+	HAL_TIM_Base_Start_IT(&htim3);
 
 	printf("Program is Starting...\r\n");
 
 	while(1)
 	{
-		//* Multi Channel ADC
-		if (adcEOCFlag)
-		{
-			adcEOCFlag = false;
-			//* Read/Get ADC Values
-			printf("ADC Values : \r\n");
-			printf(" PA1 Pot   = %d\r\n", adcValues[0]);
-			printf(" PA2 Joy-X = %d\r\n", adcValues[1]);
-			printf(" PA3 Joy-Y = %d\r\n", adcValues[2]);
-			gpio_LED_toggleGreen();
 
-			if (adcAWDGFlag)
-			{
-				adcAWDGFlag = false;
-				printf("ADC Watchdog Threshold Triggered!\r\n");
-			}
-
-			//* ADC Injected
-			HAL_ADCEx_InjectedStart(&adc1Handle);
-			if (HAL_ADCEx_InjectedPollForConversion(&adc1Handle, 150) == HAL_OK)
-			{
-				uint32_t adcInjectedValue = HAL_ADCEx_InjectedGetValue(&adc1Handle, ADC_INJECTED_RANK_1);
-				printf("ADC Injected Value = %d\r\n", (int)adcInjectedValue);
-			}
-		}
 	}
 }
 
@@ -112,7 +74,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 }
 
 /**
- * @brief ADC Analog Watchdog Interrupt Callback Functiopn
+ * @brief ADC Analog Watchdog Interrupt Callback Function
  * 
  * @param hadc 
  */
@@ -121,5 +83,18 @@ void HAL_ADC_LevelOutOfWindowCallback(ADC_HandleTypeDef *hadc)
 	if(hadc->Instance == ADC1)
 	{
 		adcAWDGFlag = true;
+	}
+}
+
+/**
+ * @brief TIM Period Elaseed Interrupt Callback Function
+ * 
+ * @param htim 
+ */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	if(htim->Instance == TIM3)
+	{
+		gpio_LED_toggleGreen();
 	}
 }

@@ -28,4 +28,9 @@ void ADC1_2_IRQHandler(void);
  */
 void DMA1_Channel1_IRQHandler(void);
 
+/**
+ * @brief TIM3 Callback
+ */
+void TIM3_IRQHandler(void);
+
 #endif /* INC_STM32F1XX_IT_H_ */

@@ -1,4 +1,5 @@
 {
+    "C_Cpp.enhancedColorization": "enabled",
     "editor.tabSize": 2,
     "files.associations": {
         "main.h": "c",
@@ -28,5 +29,27 @@
         "rcc.h": "c",
         "tim.h": "c",
         "uart.h": "c",
+    },
+    "workbench.colorCustomizations": {
+        "terminal.background": "#1F2022",
+        "terminal.foreground": "#A3A3A3",
+        "terminalCursor.background": "#A3A3A3",
+        "terminalCursor.foreground": "#A3A3A3",
+        "terminal.ansiBlack": "#1F2022",
+        "terminal.ansiBlue": "#4F97D7",
+        "terminal.ansiBrightBlack": "#585858",
+        "terminal.ansiBrightBlue": "#4F97D7",
+        "terminal.ansiBrightCyan": "#2D9574",
+        "terminal.ansiBrightGreen": "#67B11D",
+        "terminal.ansiBrightMagenta": "#A31DB1",
+        "terminal.ansiBrightRed": "#F2241F",
+        "terminal.ansiBrightWhite": "#F8F8F8",
+        "terminal.ansiBrightYellow": "#B1951D",
+        "terminal.ansiCyan": "#2D9574",
+        "terminal.ansiGreen": "#67B11D",
+        "terminal.ansiMagenta": "#A31DB1",
+        "terminal.ansiRed": "#F2241F",
+        "terminal.ansiWhite": "#A3A3A3",
+        "terminal.ansiYellow": "#B1951D"
     }
 }

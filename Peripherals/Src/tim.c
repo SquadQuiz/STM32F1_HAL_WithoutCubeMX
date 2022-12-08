@@ -43,6 +43,8 @@ bool tim_TIM3_config(uint32_t msPeriod)
   {
     return false;
   }
-
+  //* Enable TIM3 Interrupt
+  HAL_NVIC_SetPriority(TIM3_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(TIM3_IRQn);
   return true;
 }
