@@ -37,10 +37,15 @@ int main(void)
 	gpio_SW_config();
 
 	//* TIM Peripheral
-	tim_TIM3_config(150);
-	HAL_TIM_Base_Start_IT(&htim3);
 
-	printf("Program is Starting...\r\n");
+	//* Timer Output Compare
+	tim_TIM1_OC_GPIO_config();
+	tim_TIM1_OC_config(400);
+
+	//* Start Timer Channel-1 Inverted
+	HAL_TIMEx_OCN_Start(&htim1, TIM_CHANNEL_1);
+	//* Start Timer Channel-2 Inverted
+	HAL_TIMEx_OCN_Start(&htim1, TIM_CHANNEL_2);
 
 	while(1)
 	{
@@ -95,6 +100,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim->Instance == TIM3)
 	{
-		gpio_LED_toggleGreen();
+		// gpio_LED_toggleGreen();
 	}
 }
