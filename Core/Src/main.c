@@ -37,19 +37,34 @@ int main(void)
 	gpio_SW_config();
 
 	//* TIM Peripheral
-
-	//* Timer Output Compare
-	tim_TIM1_OC_GPIO_config();
-	tim_TIM1_OC_config(400);
-
-	//* Start Timer Channel-1 Inverted
-	HAL_TIMEx_OCN_Start(&htim1, TIM_CHANNEL_1);
-	//* Start Timer Channel-2 Inverted
-	HAL_TIMEx_OCN_Start(&htim1, TIM_CHANNEL_2);
+	//* TIM3 PWM
+	tim_TIM3_PWM_GPIO_config();
+	tim_TIM3_PWM_config();
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+	// tim_PWM_setDutyCycle_CH1(50);
+	// tim_PWM_setDutyCycle_CH2(30);
+	// tim_PWM_setDutyCycle_CH3(100);
+	uint8_t dutyCounter = 0;
 
 	while(1)
 	{
-
+		//** Smooth blinking 2 LED
+		if(dutyCounter == 100)
+		{
+			tim_PWM_setDutyCycle_CH1(0);
+			for(dutyCounter = 100; dutyCounter != 0; dutyCounter--)
+			{
+				tim_PWM_setDutyCycle_CH2(dutyCounter);
+				HAL_Delay(10);
+			}
+			tim_PWM_setDutyCycle_CH2(0);
+			dutyCounter = 0;
+		}
+		tim_PWM_setDutyCycle_CH1(dutyCounter);
+		dutyCounter++;
+		HAL_Delay(10);
 	}
 }
 

@@ -103,3 +103,105 @@ bool tim_TIM1_OC_config(uint32_t msPeriod)
 
   return true;
 }
+
+void tim_TIM3_PWM_GPIO_config(void)
+{
+  /*
+  * LED Red   -> PB4
+  * LED Green -> PB5
+  * LED Blue  -> PB0
+  */
+  
+  //* TIM3 PWM GPIO Configuration
+  GPIO_InitTypeDef gpioConfig = {0};
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+  
+  gpioConfig.Pin = GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_0;
+  gpioConfig.Mode = GPIO_MODE_AF_PP;
+  gpioConfig.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &gpioConfig);
+  //* GPIO Re-map -> TIM3 Partial Remap
+  __HAL_RCC_AFIO_CLK_ENABLE();
+  __HAL_AFIO_REMAP_TIM3_PARTIAL();
+}
+
+bool tim_TIM3_PWM_config(void)
+{
+  __HAL_RCC_TIM3_CLK_ENABLE();
+
+  //* TIM3 Configuration
+  htim3.Instance = TIM3;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;                      // Mode Counter Up
+  htim3.Init.Period = 200-1;                                        // 10 kHz 
+  htim3.Init.Prescaler = 36-1;                                      // 2 MHz
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;                // Division Clock with 1
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;    // Disable Auto-reload Preload
+  if(HAL_TIM_Base_Init(&htim3) != HAL_OK)                           // Init Timebase TIM3
+  {
+    return false;
+  }
+
+  //* Clock Source Configuration
+  TIM_ClockConfigTypeDef clockSrcConfig = {0};
+  clockSrcConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;            // Internal CLK from RCC
+  if(HAL_TIM_ConfigClockSource(&htim3, &clockSrcConfig) != HAL_OK)
+  {
+    return false;
+  }
+
+  //* TIM3 PWM Configuration
+  HAL_TIM_PWM_Init(&htim3);
+  TIM_OC_InitTypeDef ocConfig = {0};
+  ocConfig.OCMode = TIM_OCMODE_PWM1;
+  ocConfig.Pulse = 0;
+  ocConfig.OCPolarity = TIM_OCPOLARITY_HIGH;
+  ocConfig.OCFastMode = TIM_OCFAST_DISABLE;
+
+  //* TIM3 PWM CH1
+  if(HAL_TIM_PWM_ConfigChannel(&htim3, &ocConfig, TIM_CHANNEL_1) != HAL_OK)
+  {
+    return false;
+  }
+
+  //* TIM3 PWM CH2
+  if(HAL_TIM_PWM_ConfigChannel(&htim3, &ocConfig, TIM_CHANNEL_2) != HAL_OK)
+  {
+    return false;
+  }
+
+  //* TIM3 PWM CH3
+  if(HAL_TIM_PWM_ConfigChannel(&htim3, &ocConfig, TIM_CHANNEL_3) != HAL_OK)
+  {
+    return false;
+  }
+
+  return true;
+}
+
+void tim_PWM_setDutyCycle_CH1(uint8_t duty_0_100)
+{
+  if(duty_0_100 > 100) duty_0_100 = 100;
+  uint16_t ccrValue = (__HAL_TIM_GET_AUTORELOAD(&htim3) + 0.0f) * (duty_0_100 / 100.0f);
+  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, ccrValue);
+}
+
+void tim_PWM_setDutyCycle_CH2(uint8_t duty_0_100)
+{
+  if(duty_0_100 > 100) duty_0_100 = 100;
+  uint16_t ccrValue = (__HAL_TIM_GET_AUTORELOAD(&htim3) + 0.0f) * (duty_0_100 / 100.0f);
+  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, ccrValue);
+}
+
+void tim_PWM_setDutyCycle_CH3(uint8_t duty_0_100)
+{
+  if(duty_0_100 > 100) duty_0_100 = 100;
+  uint16_t ccrValue = (__HAL_TIM_GET_AUTORELOAD(&htim3) + 0.0f) * (duty_0_100 / 100.0f);
+  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, ccrValue);
+}
+
+void tim_PWM_setRGB(uint8_t red, uint8_t green, uint8_t blue)
+{
+  tim_PWM_setDutyCycle_CH1(100 * (red / 255.0f));
+  tim_PWM_setDutyCycle_CH2(100 * (green / 255.0f));
+  tim_PWM_setDutyCycle_CH3(100 * (blue / 255.0f));
+}
