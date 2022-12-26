@@ -11,8 +11,8 @@
 #include "main.h"
 
 //* Import External Variable
-extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
 
 /**
@@ -78,6 +78,8 @@ void tim_PWM_setRGB(uint8_t red, uint8_t green, uint8_t blue);
 
 /**
  * @brief TIM4 Encoder GPIO Configuration
+ ** TIM4_CH1 -> PB6
+ ** TIM4_CH2 -> PB7
  */
 void tim_TIM4_ENCODER_GPIO_config(void);
 

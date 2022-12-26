@@ -8,8 +8,8 @@
 #include "tim.h"
 
 //* Handle Typedef Global Variable
-TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 
 bool tim_TIM3_config(uint32_t msPeriod)
@@ -53,9 +53,15 @@ bool tim_TIM3_config(uint32_t msPeriod)
 
 void tim_TIM1_OC_GPIO_config(void)
 {
+  /*
+   * TIM3_CH1 -> PB13
+   * TIM4_CH2 -> PB14
+   */
+
+  //* TIM4 Output Compare GPIO Configuration
   GPIO_InitTypeDef gpioConfig = {0};
   __HAL_RCC_GPIOB_CLK_ENABLE();                                       // Enable GPIOB Clock
-  //*PB13, PB14
+
   gpioConfig.Pin = GPIO_PIN_13 | GPIO_PIN_14;                         // GPIO PB13,PB14
   gpioConfig.Mode = GPIO_MODE_AF_PP;                                  // GPIO Alternate function push-pull
   gpioConfig.Speed = GPIO_SPEED_FREQ_LOW;                             // PinSpeed -> Low
@@ -66,6 +72,7 @@ bool tim_TIM1_OC_config(uint32_t msPeriod)
 {
   __HAL_RCC_TIM1_CLK_ENABLE();
 
+  //* TIM3 Configuration
   htim1.Instance = TIM1;                                              // Enable TIM1 Clock
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;                        // Mode Counter-mode Up
   htim1.Init.Period = 7200-1;                                         // Period
@@ -82,7 +89,7 @@ bool tim_TIM1_OC_config(uint32_t msPeriod)
     return false;
   }
 
-  //* Output Comppare Channel Settings
+  //* TIM3 Output Comppare Channel Settings
   TIM_OC_InitTypeDef ocConfig = {0};
   ocConfig.OCMode = TIM_OCMODE_TOGGLE;                                // TIM OC Toggle
   ocConfig.Pulse = 2000-1;                                            // Pulse = 2000
@@ -108,6 +115,7 @@ bool tim_TIM1_OC_config(uint32_t msPeriod)
 void tim_TIM3_PWM_GPIO_config(void)
 {
   /*
+  !Pin-Remapped
   * LED Red   -> PB4
   * LED Green -> PB5
   * LED Blue  -> PB0
@@ -130,7 +138,7 @@ bool tim_TIM3_PWM_config(void)
 {
   __HAL_RCC_TIM3_CLK_ENABLE();
 
-  //* TIM3 Configuration
+  //* TIM3 PWM Configuration
   htim3.Instance = TIM3;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;                      // Mode Counter Up
   htim3.Init.Period = 200-1;                                        // 10 kHz 
@@ -209,27 +217,53 @@ void tim_PWM_setRGB(uint8_t red, uint8_t green, uint8_t blue)
 
 void tim_TIM4_ENCODER_GPIO_config(void)
 {
-    /*
-  * EncoderA -> PB6
-  * EncoderB -> PB7
+  /*
+  * TIM4_CH1 -> PB6
+  * TIM4_CH2 -> PB7
   */
+
+  //* TIM4 Encoder GPIO Configuration
   GPIO_InitTypeDef gpioConfig = {0};
-  __HAL_RCC_GPIOB_CLK_ENABLE();
-  gpioConfig.Pin = GPIO_PIN_6 | GPIO_PIN_7;
-  gpioConfig.Mode = GPIO_MODE_INPUT;
-  gpioConfig.Pull = GPIO_NOPULL;
+  __HAL_RCC_GPIOB_CLK_ENABLE();                                     // Enable GPIOB Clock
+  
+  gpioConfig.Pin = GPIO_PIN_6 | GPIO_PIN_7;                         // GPIO PB6,PB7
+  gpioConfig.Mode = GPIO_MODE_INPUT;                                // GPIO Input mode
+  gpioConfig.Pull = GPIO_NOPULL;                                    // No Pull-up
   HAL_GPIO_Init(GPIOB, &gpioConfig);
 }
 
+/**
+ * @brief TIM4 Encoder Configuration
+ * 
+ * @return true, false
+ */
 bool tim_TIM4_ENCODER_config(void)
 {
-  __HAL_RCC_TIM4_CLK_ENABLE();
+  __HAL_RCC_TIM4_CLK_ENABLE();                                      // Enable TIM4 Clock
   
-  htim4.Instance = TIM4;
-  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 65536-1;
-  htim4.Init.Prescaler = 0;
-  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE
+  htim4.Instance = TIM4;                                            // TIM->TIM4
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;                      // Mode Counter Up
+  htim4.Init.Period = 65536-1;                                      // Period = 16 bit
+  htim4.Init.Prescaler = 0;                                         // Prescaler = 0
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;                // Clouck Division by 1
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;    // Disable Auto-reload 
 
+  //* TIM4 Encoder Configuration
+  TIM_Encoder_InitTypeDef encoderConfig = {0};
+  encoderConfig.EncoderMode = TIM_ENCODERMODE_TI1;                  // Encoder mode TI1
+  //* TIM4 Encoder CH1
+  encoderConfig.IC1Polarity = TIM_ICPOLARITY_RISING;                // Input capture CH1 Rising
+  encoderConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;            // Input Capture CH1 Direct
+  encoderConfig.IC1Prescaler = TIM_ICPSC_DIV1;                      // Input Capture CH1 Pre-scaler
+  encoderConfig.IC1Filter = 4;                                      // Input Capture CH1 Filter
+  //* TIM4 Encoder CH2
+  encoderConfig.IC2Polarity = TIM_ICPOLARITY_RISING;                // Input capture CH2 Rising
+  encoderConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;            // Input Capture CH2 Direct
+  encoderConfig.IC2Prescaler = TIM_ICPSC_DIV1;                      // Input Capture CH2 Pre-scaler
+  encoderConfig.IC2Filter = 4;                                      // Input Capture CH2 Filter
+  if(HAL_TIM_Encoder_Init(&htim4, &encoderConfig) != HAL_OK)
+  {
+    return false;
+  }
+  return true;
 }

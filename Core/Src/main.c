@@ -37,34 +37,24 @@ int main(void)
 	gpio_SW_config();
 
 	//* TIM Peripheral
-	//* TIM3 PWM
-	tim_TIM3_PWM_GPIO_config();
-	tim_TIM3_PWM_config();
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-	// tim_PWM_setDutyCycle_CH1(50);
-	// tim_PWM_setDutyCycle_CH2(30);
-	// tim_PWM_setDutyCycle_CH3(100);
-	uint8_t dutyCounter = 0;
+	//* TIM4 Encoder Mode
+	tim_TIM4_ENCODER_GPIO_config();
+	tim_TIM4_ENCODER_config();
+	printf("Starting TIM Encoder...\r\n");
+	HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_1);
+	
+	int encoderCount;
+	uint8_t encoderDir;
+
+	printf("Program Starting\r\n");
 
 	while(1)
 	{
-		//** Smooth blinking 2 LED
-		if(dutyCounter == 100)
-		{
-			tim_PWM_setDutyCycle_CH1(0);
-			for(dutyCounter = 100; dutyCounter != 0; dutyCounter--)
-			{
-				tim_PWM_setDutyCycle_CH2(dutyCounter);
-				HAL_Delay(10);
-			}
-			tim_PWM_setDutyCycle_CH2(0);
-			dutyCounter = 0;
-		}
-		tim_PWM_setDutyCycle_CH1(dutyCounter);
-		dutyCounter++;
-		HAL_Delay(10);
+		encoderCount = __HAL_TIM_GET_COUNTER(&htim4); // TIM4->CNT Register
+		encoderDir = (TIM4->CR1 & TIM_CR1_DIR) == 0 ? 0:1;
+		printf("Encoder Counter = %d\r\n", encoderCount);
+		printf("Direction: %s\r\n", encoderDir == 0 ? "CCW" : "CW");
+		HAL_Delay(250);
 	}
 }
 
