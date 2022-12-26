@@ -10,6 +10,7 @@
 //* Handle Typedef Global Variable
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim4;
 
 bool tim_TIM3_config(uint32_t msPeriod)
 {
@@ -204,4 +205,31 @@ void tim_PWM_setRGB(uint8_t red, uint8_t green, uint8_t blue)
   tim_PWM_setDutyCycle_CH1(100 * (red / 255.0f));
   tim_PWM_setDutyCycle_CH2(100 * (green / 255.0f));
   tim_PWM_setDutyCycle_CH3(100 * (blue / 255.0f));
+}
+
+void tim_TIM4_ENCODER_GPIO_config(void)
+{
+    /*
+  * EncoderA -> PB6
+  * EncoderB -> PB7
+  */
+  GPIO_InitTypeDef gpioConfig = {0};
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+  gpioConfig.Pin = GPIO_PIN_6 | GPIO_PIN_7;
+  gpioConfig.Mode = GPIO_MODE_INPUT;
+  gpioConfig.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &gpioConfig);
+}
+
+bool tim_TIM4_ENCODER_config(void)
+{
+  __HAL_RCC_TIM4_CLK_ENABLE();
+  
+  htim4.Instance = TIM4;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 65536-1;
+  htim4.Init.Prescaler = 0;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE
+
 }

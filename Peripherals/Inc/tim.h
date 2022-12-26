@@ -13,6 +13,7 @@
 //* Import External Variable
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim4;
 
 /**
  * @brief TIM3 TRGO mode Configuration
@@ -74,5 +75,17 @@ void tim_PWM_setDutyCycle_CH3(uint8_t duty_0_100);
  * @param blue 
  */
 void tim_PWM_setRGB(uint8_t red, uint8_t green, uint8_t blue);
+
+/**
+ * @brief TIM4 Encoder GPIO Configuration
+ */
+void tim_TIM4_ENCODER_GPIO_config(void);
+
+/**
+ * @brief TIM4 Encoder Configuration
+ * 
+ * @return true, false
+ */
+bool tim_TIM4_ENCODER_config(void);
 
 #endif /* INC_TIM_H_ */
