@@ -1,6 +1,5 @@
 /.settings
 /build
-/debug
-# /.vscode/settings.json
-# /.vscode/tasks.json
-/Debug/
+/Debug
+.vscode/launch.json
+.vscode/.cortex-debug.peripherals.state.json
