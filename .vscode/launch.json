@@ -18,12 +18,12 @@
 
           /* Will get automatically detected if STM32CubeIDE is installed to default directory
              or it can be manually provided if necessary.. */
-          //"serverpath": "c:\\ST\\STM32CubeIDE_1.7.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.stlink-gdb-server.win32_2.0.100.202109301221\\tools\\bin\\ST-LINK_gdbserver.exe",
-          //"armToolchainPath": "c:\\ST\\STM32CubeIDE_1.7.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_2.0.0.202105311346\\tools\\bin",
-          //"stm32cubeprogrammer": "c:\\Program Files\\STMicroelectronics\\STM32Cube\\STM32CubeProgrammer\\bin",
+          "serverpath": "D:\\Program Files\\STMicroelectronics\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.stlink-gdb-server.win32_2.0.400.202209281104\\tools\\bin\\ST-LINK_gdbserver.exe",
+          "armToolchainPath": "D:\\Program Files\\STMicroelectronics\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.100.202210260954\\tools\\bin",
+          "stm32cubeprogrammer": "D:\\Program Files\\STMicroelectronics\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.0.500.202209151145\\tools\\bin\\",
 
           /* If you use external loader, add additional arguments */
           //"serverArgs": ["--extload", "path/to/ext/loader.stldr"],
       }
-  ]
+  ]           
 }

@@ -2,6 +2,7 @@
  * rcc.c
  *
  *  Created on: Dec 5, 2022
+ *  Last Updated: Jan 21, 2023, Added RTC Clock Configuration.
  *      Author: Squadkisz
  */
 
@@ -49,11 +50,13 @@ void rcc_systemClockConfig(void)
 	//* Created Data Structure for Initialize
 	RCC_OscInitTypeDef oscInitStruct = {0};
 	RCC_ClkInitTypeDef clkInitStruct = {0};
+	RCC_PeriphCLKInitTypeDef periphClockInit = {0};
 
 	//* Oscillator Initialization
-	oscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE; 	// OSC Type -> HSE
-	oscInitStruct.HSEState = RCC_HSE_ON; 										// HSE -> ON
-	oscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1; 		// Pre-Devision = 1
+	oscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_LSE; 	// OSC Type -> HSE or LSE
+	oscInitStruct.HSEState = RCC_HSE_ON; 										// HSE Clock -> ON
+	oscInitStruct.LSEState = RCC_LSE_ON;										// LSE Clock -> ON
+	oscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1; 		// Pre-Division = 1
 	oscInitStruct.PLL.PLLState = RCC_PLL_ON; 								// PLL -> ON
 	oscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;				// PLL -> HSE Source
 	oscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9; 								// PLL_MUL = 9, HCLK = 72 MHz
@@ -76,6 +79,14 @@ void rcc_systemClockConfig(void)
 	 * 48-72 MHz --> 2 Cycle Latency
 	*/
 	if(HAL_RCC_ClockConfig(&clkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+	{
+		return false;
+	}
+
+	//* Peripheral Clock Configuration
+	periphClockInit.PeriphClockSelection = RCC_PERIPHCLK_RTC;							// Enabled Peripheral clock -> RTC
+	periphClockInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;							// RTC Clock -> LSE
+	if(HAL_RCCEx_PeriphCLKConfig(&periphClockInit) != HAL_OK)
 	{
 		return false;
 	}

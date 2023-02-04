@@ -109,8 +109,8 @@ void gpio_SW_config(void)
 	HAL_GPIO_Init(GPIOA, &gpioInitStruct);
 
 	//? GPIOA15 -> (Defualt) JTAG Data pin -> Alternate function Remap
-	__HAL_RCC_AFIO_CLK_ENABLE();
-	__HAL_AFIO_REMAP_SWJ_DISABLE();
+	// __HAL_RCC_AFIO_CLK_ENABLE();
+	// __HAL_AFIO_REMAP_SWJ_DISABLE();
 	//? JTAG Prog/DBG will be disabled (Prog by Enable Bootloader Pin)
 }
 
