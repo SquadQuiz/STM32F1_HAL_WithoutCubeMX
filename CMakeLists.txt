@@ -41,6 +41,8 @@ set(sources_SRCS
     ${PROJ_PATH}/Core/Src/main.c
     ${PROJ_PATH}/Core/Src/printf_redirect.c
     ${PROJ_PATH}/Core/Src/stm32f1xx_it.c
+    ${PROJ_PATH}/Core/Src/syscalls.c
+    ${PROJ_PATH}/Core/Src/sysmem.c
     ${PROJ_PATH}/Core/Src/system_stm32f1xx.c
     # HAL Driver
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c
