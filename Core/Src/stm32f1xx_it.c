@@ -9,6 +9,7 @@
 #include "stm32f1xx_it.h"
 #include "adc.h"
 #include "tim.h"
+#include "rtc.h"
 
 void SysTick_Handler(void)
 {
@@ -34,4 +35,12 @@ void DMA1_Channel1_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
 	HAL_TIM_IRQHandler(&htim3);
+}
+
+/**
+ * @brief RTC Alarm Handler.
+ */
+void RTC_Alarm_IRQHandler(void)
+{
+	HAL_RTC_AlarmIRQHandler(&rtcHandle);
 }

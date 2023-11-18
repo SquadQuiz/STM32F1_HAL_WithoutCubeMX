@@ -33,4 +33,10 @@ void DMA1_Channel1_IRQHandler(void);
  */
 void TIM3_IRQHandler(void);
 
+/**
+ * @brief RTC Alarm Callback.
+ * 
+ */
+void RTC_Alarm_IRQHandler(void);
+
 #endif /* INC_STM32F1XX_IT_H_ */

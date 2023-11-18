@@ -31,6 +31,9 @@ typedef struct ClockDate_TAG
   uint16_t year;
 } ClockDate_t;
 
+// Alarm Callback function
+typedef void (*AlarmEventCallback_t)(void);
+
 /**
  * @brief RTC Configuration.
  *
@@ -57,5 +60,33 @@ void rtc_setDate(ClockDate_t *pDate);
  * @param pDate
  */
 void rtc_getTimeDate(ClockTime_t *pTime, ClockDate_t *pDate);
+
+/**
+ * @brief RTC set alarm.
+ * 
+ * @param pTime 
+ * @param cb 
+ */
+void rtc_setAlarm(ClockTime_t *pTime, AlarmEventCallback_t cb);
+
+/**
+ * @brief RTC get alarm.
+ * 
+ * @param pTime 
+ */
+void rtc_getAlarm(ClockTime_t *pTime);
+
+/**
+ * @brief RTC stop alarm.
+ * 
+ * @param pTime 
+ */
+void rtc_stopAlarm(ClockTime_t *pTime);
+
+/**
+ * @brief RTC callback function.
+ * 
+ */
+void rtc_alarm_callback(void);
 
 #endif /* INC_RTC_H_ */

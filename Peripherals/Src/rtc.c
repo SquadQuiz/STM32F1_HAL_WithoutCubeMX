@@ -13,6 +13,9 @@ RTC_HandleTypeDef rtcHandle;
 //* Weekday const string array.
 const char *daysOfWkString[7] = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
 
+// Alarm callback
+static AlarmEventCallback_t llAlarm_cb;
+
 /**
  * @brief RTC Configuration.
  *
@@ -38,6 +41,11 @@ bool rtc_config(void)
       return false;
     }
   }
+
+  // Enable RTC Alarm Interrupt.
+  HAL_NVIC_SetPriority(RTC_Alarm_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(RTC_Alarm_IRQn);
+  
   return true;
 }
 
@@ -93,3 +101,35 @@ void rtc_getTimeDate(ClockTime_t *pTime, ClockDate_t *pDate)
   pDate->month = dateDef.Month;      // get month
   pDate->year = dateDef.Year + 2000; // get year
 }
+
+void rtc_setAlarm(ClockTime_t *pTime, AlarmEventCallback_t cb)
+{
+  llAlarm_cb = cb;
+  RTC_AlarmTypeDef alarmdef = {0};
+  alarmdef.AlarmTime.Hours = pTime->hrs24;      // set alarm hour
+  alarmdef.AlarmTime.Minutes = pTime->minutes;  // set alarm minute
+  alarmdef.AlarmTime.Seconds = pTime->seconds;  // set alarm second
+  alarmdef.Alarm = RTC_ALARM_A;
+  HAL_RTC_SetAlarm_IT(&rtcHandle, &alarmdef, RTC_FORMAT_BIN);
+}
+
+void rtc_getAlarm(ClockTime_t *pTime)
+{
+  RTC_AlarmTypeDef alarmdef = {0};
+  HAL_RTC_GetAlarm(&rtcHandle, &alarmdef, RTC_ALARM_A, RTC_FORMAT_BIN);
+  pTime->hrs24 = alarmdef.AlarmTime.Hours;
+  pTime->minutes = alarmdef.AlarmTime.Minutes;
+  pTime->seconds = alarmdef.AlarmTime.Seconds;
+}
+
+void rtc_stopAlarm(ClockTime_t *pTime)
+{
+  HAL_RTC_DeactivateAlarm(&rtcHandle, RTC_ALARM_A);
+}
+
+void rtc_alarm_callback(void)
+{
+  // Call user callback
+  llAlarm_cb();
+}
+
