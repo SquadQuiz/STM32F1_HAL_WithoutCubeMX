@@ -14,9 +14,6 @@
 #include "tim.h"
 #include "rtc.h"
 
-void userAlarmCallback(void);
-bool alarmFlag = false;
-
 int main(void)
 {
 
@@ -34,52 +31,14 @@ int main(void)
 	gpio_PB_config();
 	gpio_SW_config();
 
-	//* RTC Peripheral
-	rtc_config();
-
-	//* Time initialzed
-	ClockTime_t timDef;
-	timDef.hrs24 = 16;
-	timDef.minutes = 53;
-	timDef.seconds = 24;
-	rtc_setTime(&timDef); // set RTC time.
-
-	//* Date intialized
-	ClockDate_t dateDef;
-	dateDef.day = 18;
-	dateDef.month = 12;
-	dateDef.year = 2020;
-	rtc_setDate(&dateDef); // set RTC date.
-
-	//* Alarm Initialized
-	timDef.seconds = 40;	
-	rtc_setAlarm(&timDef, &userAlarmCallback);
-
-	printf("Program is Starting...\r\n");
+	uint8_t rxBuffer[10];
+	printf("Send 10 bytes please\n");
 
 	while (1)
 	{
-		rtc_getTimeDate(&timDef, &dateDef);																								 // get time and date from RTC module.
-		printf("Weekdate: %s \r\n", daysOfWkString[dateDef.dayOfWk - 1]);									 // displaying weekday.
-		printf("Date: %02u-%02u-%04u\r\n", dateDef.day, dateDef.month, dateDef.year);			 // displaying date: (date/mounth/year)
-		printf("Time : %02u:%02u:%02u\r\n", timDef.hrs24, timDef.minutes, timDef.seconds); // displaying time (second/minute/hour)
-	
-		if (alarmFlag)
+		if (HAL_UART_Receive(&huart1, rxBuffer, 10, HAL_MAX_DELAY) == HAL_OK) 
 		{
-			alarmFlag = false;
-			printf("***** Alarm Event! ******\r\n");
+			HAL_UART_Transmit(&huart1, rxBuffer, 10, 20);
 		}
-	
-		HAL_Delay(1000);																																	 // add delay to display every second.
 	}
-}
-
-void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
-{
-	rtc_alarm_callback();
-}
-
-void userAlarmCallback(void)
-{
-	alarmFlag = true;
 }
