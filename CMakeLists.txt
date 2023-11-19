@@ -13,7 +13,7 @@ message("Build type: "              ${CMAKE_BUILD_TYPE})
 #
 # Core project settings
 #
-project(STM32F1_HAL)
+project(STM32F1_HAL_WithoutCubeMX)
 enable_language(C CXX ASM)
 
 #
