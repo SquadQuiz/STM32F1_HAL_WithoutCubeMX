@@ -12,6 +12,8 @@
 
 //* Import External Variable
 extern UART_HandleTypeDef huart1;
+extern DMA_HandleTypeDef dmaHandle_uart1_tx;
+extern DMA_HandleTypeDef dmaHandle_uart1_rx;
 
 /**
  * @brief UART GPIO Configuration

@@ -9,6 +9,8 @@
 
 //* Handle Typedef Global Variable
 UART_HandleTypeDef huart1;
+DMA_HandleTypeDef dmaHandle_uart1_tx;
+DMA_HandleTypeDef dmaHandle_uart1_rx;
 
 /**
  * @brief UART GPIO Configuration
@@ -58,6 +60,48 @@ bool uart_UART1_config(void)
 	{
 		return false;
 	}
+
+	// DMA Channel 4 --> UART1 Tx
+	// DMA Channel 5 --> UART1 Rx
+
+	__HAL_RCC_DMA1_CLK_ENABLE(); // Enable clock for DMA1
+	// UART1 DMA Tx Init
+	dmaHandle_uart1_tx.Instance = DMA1_Channel4;
+	dmaHandle_uart1_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+	dmaHandle_uart1_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+	dmaHandle_uart1_tx.Init.MemInc = DMA_MINC_ENABLE;
+	dmaHandle_uart1_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+	dmaHandle_uart1_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+	dmaHandle_uart1_tx.Init.Mode = DMA_NORMAL;
+	dmaHandle_uart1_tx.Init.Priority = DMA_PRIORITY_LOW;
+	if (HAL_DMA_Init(&dmaHandle_uart1_tx) != HAL_OK)
+	{
+		return false;
+	}
+	__HAL_LINKDMA(&huart1, hdmatx, dmaHandle_uart1_tx); // Link/Bind UART Peripheral to DMA notes: "hdmatx" is pointer from DMA_HandleTypeDef 
+	HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 5, 0); 		// Set IRQ Priority
+	HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);							// Enable DMA1 Channel 4 IRQ
+
+	// UART1 DMA Rx Init
+	dmaHandle_uart1_rx.Instance = DMA1_Channel5;
+	dmaHandle_uart1_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	dmaHandle_uart1_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+	dmaHandle_uart1_rx.Init.MemInc = DMA_MINC_ENABLE;
+	dmaHandle_uart1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+	dmaHandle_uart1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+	dmaHandle_uart1_rx.Init.Mode = DMA_NORMAL;
+	dmaHandle_uart1_rx.Init.Priority = DMA_PRIORITY_LOW;
+	if (HAL_DMA_Init(&dmaHandle_uart1_rx) != HAL_OK)
+	{
+		return false;
+	}
+	__HAL_LINKDMA(&huart1, hdmarx, dmaHandle_uart1_rx); // Link/Bind UART Peripheral to DMA notes: "hdmarx" is pointer from DMA_HandleTypeDef 
+	HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 5, 0); 		// Set IRQ Priority
+	HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);							// Enable DMA1 Channel 5 IRQ
+
+	// Enable UART IRQ
+	HAL_NVIC_SetPriority(USART1_IRQn, 5, 0);
+	HAL_NVIC_EnableIRQ(USART1_IRQn);
 
 	return true;
 }

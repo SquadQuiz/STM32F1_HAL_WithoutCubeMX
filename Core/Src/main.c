@@ -14,6 +14,9 @@
 #include "tim.h"
 #include "rtc.h"
 
+bool uartRxFlag = false;
+bool uartTxFlag = false;
+
 int main(void)
 {
 
@@ -28,17 +31,46 @@ int main(void)
 
 	//* GPIO Peripheral
 	gpio_LED_config();
-	gpio_PB_config();
-	gpio_SW_config();
+	// gpio_PB_config();
+	// gpio_SW_config();
 
-	uint8_t rxBuffer[10];
+	uint8_t rxBuffer[20];
+	uint8_t dmaCount = 0;
 	printf("Send 10 bytes please\n");
+	HAL_UART_Receive_DMA(&huart1, rxBuffer, 10);
 
 	while (1)
 	{
-		if (HAL_UART_Receive(&huart1, rxBuffer, 10, HAL_MAX_DELAY) == HAL_OK) 
+		gpio_LED_toggleGreen();
+		HAL_Delay(1000);
+		//Check for received.
+		dmaCount = __HAL_DMA_GET_COUNTER(&dmaHandle_uart1_rx);
+		printf("DMA Count: %d\n", dmaCount);
+		if (uartRxFlag) 
 		{
-			HAL_UART_Transmit(&huart1, rxBuffer, 10, 20);
+			uartRxFlag = false;
+			HAL_UART_Transmit_DMA(&huart1, rxBuffer, 10);
+			while(!uartTxFlag);
+			uartTxFlag = false;
+			// Start UART1 reception again.
+			printf("Send 10 bytes please\n");
+			HAL_UART_Receive_DMA(&huart1, rxBuffer, 10);
 		}
+	}
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == USART1)
+	{
+		uartRxFlag = true;
+	}
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if (huart->Instance == USART1)
+	{
+		uartTxFlag = true;
 	}
 }

@@ -106,5 +106,19 @@
             },
             "problemMatcher": []
         },
+        {
+            "type": "shell",
+            "label": "CubeProg: Flash project via UART(COM6)",
+            "command": "STM32_Programmer_CLI",
+            "args": [
+                "--connect",
+                "port=com6",
+                "--download", "${command:cmake.launchTargetPath}",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
     ]
 }
