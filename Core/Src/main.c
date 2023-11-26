@@ -56,3 +56,17 @@ int main(void)
 	}
 }
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	// if EXTI pin equal to PA0 pin (Push button)
+	if (GPIO_Pin == GPIO_PIN_0) 
+	{
+		// Resume SysTick
+		HAL_ResumeTick();
+		printf("Woke up in Interrupt!\n");
+		printf("Back to Sleep!\n");
+		HAL_Delay(2000);
+		// Suspend SysTick
+		HAL_SuspendTick();
+	}
+}
