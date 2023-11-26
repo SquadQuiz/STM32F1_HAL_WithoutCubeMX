@@ -13,9 +13,8 @@
 #include "adc.h"
 #include "tim.h"
 #include "rtc.h"
-
-bool uartRxFlag = false;
-bool uartTxFlag = false;
+#include "spi.h"
+#include "rc522.h"
 
 int main(void)
 {
@@ -34,43 +33,22 @@ int main(void)
 	// gpio_PB_config();
 	// gpio_SW_config();
 
-	uint8_t rxBuffer[20];
-	uint8_t dmaCount = 0;
-	printf("Send 10 bytes please\n");
-	HAL_UART_Receive_DMA(&huart1, rxBuffer, 10);
+	//* SPI Peripheral
+	spi_GPIO_config();
+	spi_config();
+
+	//SPI Test
+	for (uint8_t i = 0; i < 0x40; i++) 
+	{
+		printf("Register[0x%02X] = 0x%02X\n", i, rc522_regRead8(i));
+		HAL_Delay(10);
+	}
 
 	while (1)
 	{
+		
 		gpio_LED_toggleGreen();
-		HAL_Delay(1000);
-		//Check for received.
-		dmaCount = __HAL_DMA_GET_COUNTER(&dmaHandle_uart1_rx);
-		printf("DMA Count: %d\n", dmaCount);
-		if (uartRxFlag) 
-		{
-			uartRxFlag = false;
-			HAL_UART_Transmit_DMA(&huart1, rxBuffer, 10);
-			while(!uartTxFlag);
-			uartTxFlag = false;
-			// Start UART1 reception again.
-			printf("Send 10 bytes please\n");
-			HAL_UART_Receive_DMA(&huart1, rxBuffer, 10);
-		}
+		HAL_Delay(500);
 	}
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	if(huart->Instance == USART1)
-	{
-		uartRxFlag = true;
-	}
-}
-
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-{
-	if (huart->Instance == USART1)
-	{
-		uartTxFlag = true;
-	}
-}
