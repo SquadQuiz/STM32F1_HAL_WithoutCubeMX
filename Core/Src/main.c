@@ -18,6 +18,7 @@
 #include "i2c.h"
 #include "TJ_MPU6050.h"
 #include "crc.h"
+#include "pwr.h"
 
 int main(void)
 {
@@ -33,16 +34,25 @@ int main(void)
 
 	//* GPIO Peripheral
 	gpio_LED_config();
+	gpio_PB_config();
 
-	//* CRC Peripheral
-	crc_config();
-	uint32_t crcBuf[2] = {0x00110022, 0x00330044};
-	uint32_t crcValue = HAL_CRC_Calculate(&crcHandle, crcBuf, 2);
-	printf("CRC Value = 0x%08X\n", crcValue);
+	//* PWR 
+	__HAL_RCC_PWR_CLK_ENABLE(); // Enable PWR Clock
+	// Sleep mode example
+	// Enable push button interrupt --> Wake-up
+	exti_button_config();
+	for (uint8_t i = 10; i > 0; i--)
+	{
+		printf("Entering Sleep mode in %d seconds\n", i);
+		HAL_Delay(1000);
+	}
+	pwr_enterSleep();
+	printf("Just woke-up on Sleep mode!\n");
 
 	while (1)
 	{
-		
+		gpio_LED_toggleGreen();
+		HAL_Delay(250);
 	}
 }
 

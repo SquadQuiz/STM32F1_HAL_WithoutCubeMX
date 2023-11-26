@@ -14,6 +14,6 @@
  * @brief RCC System Clock Configuration
  * 
  */
-void rcc_systemClockConfig(void);
+bool rcc_systemClockConfig(void);
 
 #endif /* INC_RCC_H_ */

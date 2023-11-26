@@ -8,7 +8,7 @@
 
 #include "rcc.h"
 
-void rcc_systemClockConfig(void)
+bool rcc_systemClockConfig(void)
 {
 	/*
 	 * Clock Configuration Parameters
