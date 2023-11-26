@@ -15,4 +15,9 @@
  */
 void pwr_enterSleep(void);
 
+/**
+ * @brief Enter Stop mode
+ */
+void pwr_enterStop(void);
+
 #endif /* INC_PWR_H_ */

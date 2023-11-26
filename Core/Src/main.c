@@ -43,11 +43,11 @@ int main(void)
 	exti_button_config();
 	for (uint8_t i = 10; i > 0; i--)
 	{
-		printf("Entering Sleep mode in %d seconds\n", i);
+		printf("Entering Stop mode in %d seconds\n", i);
 		HAL_Delay(1000);
 	}
-	pwr_enterSleep();
-	printf("Just woke-up on Sleep mode!\n");
+	pwr_enterStop();
+	printf("Just woke-up on Stop mode!\n");
 
 	while (1)
 	{
@@ -61,12 +61,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	// if EXTI pin equal to PA0 pin (Push button)
 	if (GPIO_Pin == GPIO_PIN_0) 
 	{
-		// Resume SysTick
-		HAL_ResumeTick();
-		printf("Woke up in Interrupt!\n");
-		printf("Back to Sleep!\n");
-		HAL_Delay(2000);
-		// Suspend SysTick
-		HAL_SuspendTick();
+
 	}
 }
