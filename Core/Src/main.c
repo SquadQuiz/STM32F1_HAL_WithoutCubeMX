@@ -38,29 +38,27 @@ int main(void)
 
 	//* PWR 
 	__HAL_RCC_PWR_CLK_ENABLE(); // Enable PWR Clock
-	// Sleep mode example
-	// Enable push button interrupt --> Wake-up
-	exti_button_config();
+	if (__HAL_PWR_GET_FLAG(PWR_FLAG_SB) != RESET)
+	{
+		// Clear Standby flag
+		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_SB);
+		printf("System Reset from Standby mode!\n");
+	}
+
 	for (uint8_t i = 10; i > 0; i--)
 	{
-		printf("Entering Stop mode in %d seconds\n", i);
+		printf("Entering Standby mode in %d seconds\n", i);
 		HAL_Delay(1000);
+		if(gpio_PB_read())
+		{
+			HAL_Delay(1000);
+			pwr_enterStandby();
+		}
 	}
-	pwr_enterStop();
-	printf("Just woke-up on Stop mode!\n");
 
 	while (1)
 	{
 		gpio_LED_toggleGreen();
 		HAL_Delay(250);
-	}
-}
-
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-	// if EXTI pin equal to PA0 pin (Push button)
-	if (GPIO_Pin == GPIO_PIN_0) 
-	{
-
 	}
 }

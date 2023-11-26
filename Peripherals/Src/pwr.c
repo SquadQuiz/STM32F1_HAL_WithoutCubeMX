@@ -33,3 +33,15 @@ void pwr_enterStop(void)
   // Resume SysTick
   HAL_ResumeTick();
 }
+
+void pwr_enterStandby(void)
+{
+  // Disable WKUP pin
+  HAL_PWR_DisableWakeUpPin(PWR_WAKEUP_PIN1);
+  // Clear WKUP flags
+  __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+  // Enable WKUP pin
+  HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN1);
+  // Enter Standby
+  HAL_PWR_EnterSTANDBYMode();
+}
