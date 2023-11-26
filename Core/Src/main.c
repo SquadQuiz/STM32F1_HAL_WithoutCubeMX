@@ -36,25 +36,28 @@ int main(void)
 	gpio_LED_config();
 	gpio_PB_config();
 
-	//* PWR 
-	__HAL_RCC_PWR_CLK_ENABLE(); // Enable PWR Clock
-	if (__HAL_PWR_GET_FLAG(PWR_FLAG_SB) != RESET)
-	{
-		// Clear Standby flag
-		__HAL_PWR_CLEAR_FLAG(PWR_FLAG_SB);
-		printf("System Reset from Standby mode!\n");
-	}
+	//* Flash Periheral
+	FLASH_EraseInitTypeDef eraseDef;
+	eraseDef.PageAddress = 0x08007C00; // PAGE 31 (1KB Per Page)
+	eraseDef.NbPages = 1; // 1 Page 
+	eraseDef.TypeErase = FLASH_TYPEERASE_PAGES;
+	uint32_t pageErr = 0;
 
-	for (uint8_t i = 10; i > 0; i--)
-	{
-		printf("Entering Standby mode in %d seconds\n", i);
-		HAL_Delay(1000);
-		if(gpio_PB_read())
-		{
-			HAL_Delay(1000);
-			pwr_enterStandby();
-		}
-	}
+	// 1 Unlock Flash
+	HAL_FLASH_Unlock();
+	// 2 Erase Flash
+	HAL_FLASHEx_Erase(&eraseDef, &pageErr);
+	// 3 Program Flash/Write
+	uint16_t dataWrite[2] = { 0x1234, 0x4321 };
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, 0x08007C00, dataWrite[0]); // uint16_t = HALFWORD
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, 0x08007C00 + 2, dataWrite[1]); // offset 2 
+	// 4 Lock Flash
+	HAL_FLASH_Lock();
+	// 5 Read
+	uint16_t readData[2];
+	readData[0] = *(__IO uint16_t*)(0x08007C00);
+	readData[1] = *(__IO uint16_t*)(0x08007C00 + 2);
+	printf("Flash Read data: 0x%04X, 0x%04X\n", readData[0], readData[1]);
 
 	while (1)
 	{
