@@ -51,6 +51,7 @@ set(sources_SRCS
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c
+    ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_crc.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c
@@ -71,6 +72,7 @@ set(sources_SRCS
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
     # Peripherals
     ${PROJ_PATH}/Peripherals/Src/adc.c
+    ${PROJ_PATH}/Peripherals/Src/crc.c
     ${PROJ_PATH}/Peripherals/Src/exti.c
     ${PROJ_PATH}/Peripherals/Src/gpio.c
     ${PROJ_PATH}/Peripherals/Src/i2c.c
