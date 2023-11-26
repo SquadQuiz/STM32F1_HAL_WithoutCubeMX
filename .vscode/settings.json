@@ -32,6 +32,7 @@
         "rtc.h": "c",
         "tim.h": "c",
         "uart.h": "c",
+        "tj_mpu6050.h": "c"
     },
     "workbench.colorCustomizations": {
         "terminal.background": "#1F2022",

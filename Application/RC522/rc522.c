@@ -53,7 +53,7 @@ void rc522_regWrite8(uint8_t reg, uint8_t data8)
 {
   spi_CS1_enable();
   uint8_t txData[2] = {0x7E&(reg << 1), data8};
-  HAL_SPI_Transmit(&spi1Handle, &txData, 2, 100);
+  HAL_SPI_Transmit(&spi1Handle, txData, 2, 100);
   spi_CS1_disable();
 }
 

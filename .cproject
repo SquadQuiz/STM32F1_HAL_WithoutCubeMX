@@ -48,7 +48,8 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\HAL&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\HAL\STM32F1xx_HAL_Driver\Inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\HAL\STM32F1xx_HAL_Driver\Inc\Legacy&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Application\RC522\&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Application\MPU6050&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Application\RC522&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.337650406" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>

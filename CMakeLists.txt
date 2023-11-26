@@ -38,6 +38,7 @@ set(EXECUTABLE                      ${CMAKE_PROJECT_NAME})
 set(sources_SRCS
     # Put here your source files, one in each line, relative to CMakeLists.txt file location
     # Application
+    ${PROJ_PATH}/Application/MPU6050/TJ_MPU6050.c
     ${PROJ_PATH}/Application/RC522/rc522.c
     # Core Source files
     ${PROJ_PATH}/Core/Src/main.c
@@ -56,6 +57,7 @@ set(sources_SRCS
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
+    ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c
@@ -71,6 +73,7 @@ set(sources_SRCS
     ${PROJ_PATH}/Peripherals/Src/adc.c
     ${PROJ_PATH}/Peripherals/Src/exti.c
     ${PROJ_PATH}/Peripherals/Src/gpio.c
+    ${PROJ_PATH}/Peripherals/Src/i2c.c
     ${PROJ_PATH}/Peripherals/Src/rcc.c
     ${PROJ_PATH}/Peripherals/Src/rtc.c
     ${PROJ_PATH}/Peripherals/Src/spi.c
@@ -86,6 +89,7 @@ set(sources_SRCS
 #
 set(include_path_DIRS
     # Put here your include dirs, one in each line, relative to CMakeLists.txt file location
+    ${PROJ_PATH}/Application/MPU6050
     ${PROJ_PATH}/Application/RC522
     ${PROJ_PATH}/Core/Inc
     ${PROJ_PATH}/CMSIS/Include

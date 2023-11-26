@@ -15,6 +15,7 @@
 #include "rtc.h"
 #include "spi.h"
 #include "rc522.h"
+#include "i2c.h"
 
 int main(void)
 {
@@ -30,49 +31,24 @@ int main(void)
 
 	//* GPIO Peripheral
 	gpio_LED_config();
-	// gpio_PB_config();
-	// gpio_SW_config();
 
-	//* SPI Peripheral
-	spi_GPIO_config();
-	spi_config();
+	//* I2C Peripheral
+	i2c_I2C1_gpio_config();
+	i2c_config();
 
-	//SPI Test
-	for (uint8_t i = 0; i < 0x40; i++) 
+	// Check I2C Slave Address.
+	if (HAL_I2C_IsDeviceReady(&i2c1Handle, (0x68 << 1), 5, HAL_MAX_DELAY) == HAL_OK)
 	{
-		printf("Register[0x%02X] = 0x%02X\n", i, rc522_regRead8(i));
-		HAL_Delay(10);
+		printf("Found MPU6050 I2C Device!\n");
+		gpio_LED_writeGreen(1);
 	}
-	//RFID Card
-	uint8_t cardId[5];
-	uint8_t blueTagId[5] = { 0x33,0xEF,0xD3,0x99,0x96 };
-	rc522_init();
-	printf("Place your card\n");
-
+	else 
+	{
+		printf("MPU6050 Device is not Found!\n");
+		gpio_LED_writeGreen(0);
+	}
 	while (1)
 	{
-		if (rc522_checkCard(cardId)) 
-		{
-			printf("Card is Detectied with ID:\n");
-			for (uint8_t i = 0; i < 5; i++) 
-			{
-				printf("[%d]: 0x%02X\n", i, cardId[i]);
-			}
-			if (rc522_compareIds(cardId, blueTagId)) 
-			{
-				printf("Success, access granted!\n");
-				gpio_LED_writeGreen(1);
-			}
-			else
-			{
-				printf("Failed, access denied!\n");
-				gpio_LED_writeGreen(0);
-			}
-			printf("******************\n\n");
-			HAL_Delay(2000);
-			gpio_LED_writeGreen(0);
-		}
-		HAL_Delay(500);
 	}
 }
 
