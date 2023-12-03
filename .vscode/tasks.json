@@ -43,7 +43,7 @@
                 "--connect",
                 "port=swd",
                 "--download", "${command:cmake.launchTargetPath}",
-                "-hardRst"
+                "-rst"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

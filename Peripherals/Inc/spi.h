@@ -28,4 +28,10 @@ bool spi_config(void);
 void spi_CS1_enable(void);
 void spi_CS1_disable(void);
 
+/**
+ * @brief SPI1 CS2-SDCARD
+ */
+void spi_CS2_enable(void);
+void spi_CS2_disable(void);
+
 #endif /* INC_SPI_H_ */

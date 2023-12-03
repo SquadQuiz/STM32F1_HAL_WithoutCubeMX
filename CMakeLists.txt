@@ -38,8 +38,15 @@ set(EXECUTABLE                      ${CMAKE_PROJECT_NAME})
 set(sources_SRCS
     # Put here your source files, one in each line, relative to CMakeLists.txt file location
     # Application
+    # IMU MPU6050
     ${PROJ_PATH}/Application/MPU6050/TJ_MPU6050.c
+    # RFID RC522
     ${PROJ_PATH}/Application/RC522/rc522.c
+    # SDCARD
+    ${PROJ_PATH}/Application/SdCard/fatfs_sd.c
+    ${PROJ_PATH}/Application/SdCard/fatfs.c
+    ${PROJ_PATH}/Application/SdCard/sd_driver.c
+    ${PROJ_PATH}/Application/SdCard/user_diskio.c
     # Core Source files
     ${PROJ_PATH}/Core/Src/main.c
     ${PROJ_PATH}/Core/Src/printf_redirect.c
@@ -70,6 +77,11 @@ set(sources_SRCS
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_usart.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
+    # Middleware
+    # FatFs
+    ${PROJ_PATH}/Middleware/FatFs/diskio.c
+    ${PROJ_PATH}/Middleware/FatFs/ff_gen_drv.c
+    ${PROJ_PATH}/Middleware/FatFs/ff.c
     # Peripherals
     ${PROJ_PATH}/Peripherals/Src/adc.c
     ${PROJ_PATH}/Peripherals/Src/crc.c
@@ -94,9 +106,11 @@ set(include_path_DIRS
     # Put here your include dirs, one in each line, relative to CMakeLists.txt file location
     ${PROJ_PATH}/Application/MPU6050
     ${PROJ_PATH}/Application/RC522
+    ${PROJ_PATH}/Application/SdCard
     ${PROJ_PATH}/Core/Inc
     ${PROJ_PATH}/CMSIS/Include
     ${PROJ_PATH}/CMSIS/Device
+    ${PROJ_PATH}/Middleware/FatFs
     ${PROJ_PATH}/Peripherals/Inc
     ${PROJ_PATH}/HAL
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Inc

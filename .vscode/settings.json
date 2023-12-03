@@ -34,7 +34,10 @@
         "uart.h": "c",
         "tj_mpu6050.h": "c",
         "crc.h": "c",
-        "pwr.h": "c"
+        "pwr.h": "c",
+        "sd_driver.h": "c",
+        "fatfs.h": "c",
+        "ff.h": "c"
     },
     "workbench.colorCustomizations": {
         "terminal.background": "#1F2022",

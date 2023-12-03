@@ -4,7 +4,7 @@ set(CMAKE_SYSTEM_PROCESSOR          arm)
 # Some default GCC settings
 # arm-none-eabi- must be part of path environment
 set(TOOLCHAIN_PREFIX                arm-none-eabi-)
-set(FLAGS                           "-fdata-sections -ffunction-sections --specs=nano.specs -Wl,--gc-sections")
+set(FLAGS                           "-fdiagnostics-color=always -fdata-sections -ffunction-sections -Wl,--gc-sections ")
 set(CPP_FLAGS                       "-fno-rtti -fno-exceptions -fno-threadsafe-statics")
 
 # Define compiler settings

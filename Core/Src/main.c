@@ -19,6 +19,17 @@
 #include "TJ_MPU6050.h"
 #include "crc.h"
 #include "pwr.h"
+#include "fatfs.h"
+#include "sd_driver.h"
+
+#define KB 1024U
+#define MB 1048576UL
+
+//SD Card Type -> exFAT, 32 GB
+// ..... FAT32
+FATFS fs, *pFatFs;
+FRESULT fresult;
+FIL fil;
 
 int main(void)
 {
@@ -36,28 +47,56 @@ int main(void)
 	gpio_LED_config();
 	gpio_PB_config();
 
-	//* Flash Periheral
-	FLASH_EraseInitTypeDef eraseDef;
-	eraseDef.PageAddress = 0x08007C00; // PAGE 31 (1KB Per Page)
-	eraseDef.NbPages = 1; // 1 Page 
-	eraseDef.TypeErase = FLASH_TYPEERASE_PAGES;
-	uint32_t pageErr = 0;
+	//* SPI Peripheral
+	spi_GPIO_config();
+	spi_config();
+	//* FatFs
+	MX_FATFS_Init();
 
-	// 1 Unlock Flash
-	HAL_FLASH_Unlock();
-	// 2 Erase Flash
-	HAL_FLASHEx_Erase(&eraseDef, &pageErr);
-	// 3 Program Flash/Write
-	uint16_t dataWrite[2] = { 0x1234, 0x4321 };
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, 0x08007C00, dataWrite[0]); // uint16_t = HALFWORD
-	HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, 0x08007C00 + 2, dataWrite[1]); // offset 2 
-	// 4 Lock Flash
-	HAL_FLASH_Lock();
-	// 5 Read
-	uint16_t readData[2];
-	readData[0] = *(__IO uint16_t*)(0x08007C00);
-	readData[1] = *(__IO uint16_t*)(0x08007C00 + 2);
-	printf("Flash Read data: 0x%04X, 0x%04X\n", readData[0], readData[1]);
+	// Mount SD Card
+	f_mount(&fs, "", 1);
+	if (fresult != FR_OK)
+	{
+		printf("Failed to mount SD Card!!\n");
+	}
+	else
+	{
+		printf("Successfully mounted SD Card\n");
+	}
+
+	// SD Card Driver Size
+	uint32_t blockSize;
+	uint32_t numBlocks;
+	sd_driver_getSizeInfo(&blockSize, &numBlocks);
+	uint64_t totalSize;
+	totalSize = (uint64_t)numBlocks * (uint64_t)blockSize / (uint64_t)(2 * KB) ; // should be 134243093
+	printf("Total SD Card Size = %llu KB\n", totalSize);
+	printf("Total SD Card Size = %llu MB\n", totalSize / KB);
+	printf("Total SD Card Size = %llu GB\n", totalSize / MB);
+
+	//FatFs Lib
+	// FATFS* pFatFs;
+	DWORD clusterCount;
+	uint32_t totalSpace, freeSpace;
+
+	/* Get volume information and free clusters of drive 1 */
+	fresult = f_getfree("", &clusterCount, &pFatFs);
+	if (fresult != FR_OK) {
+		printf("Something wrong, Error code : 0x%02X\n", fresult);
+  }
+
+	/* Get total sectors and free sectors */
+	totalSpace = (pFatFs->n_fatent - 2) * (pFatFs->csize);
+	freeSpace = clusterCount * (pFatFs->csize);
+
+	/* Print the free space (assuming 512 bytes/sector) */
+	printf("%10lu KiB total drive space.\n%10lu KiB available.\n", totalSpace / 2, freeSpace / 2);
+
+  /* SD Card write file */
+	// f_open(&fil, "test.txt", FA_OPEN_ALWAYS | FA_WRITE | FA_READ);
+	// f_lseek(&fil, fil.fsize);
+	// f_puts("This is an example text to check SD Card Module with STM32 Blue Pill\n", &fil);
+	// f_close(&fil);
 
 	while (1)
 	{

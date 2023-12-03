@@ -11,8 +11,9 @@ SPI_HandleTypeDef spi1Handle;
 
 void spi_GPIO_config(void) 
 {
-  __HAL_RCC_GPIOA_CLK_ENABLE();
   GPIO_InitTypeDef gpioInitStruct = {0};
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
   // SPI1 CLK -> PA5
   // SPI1 MOSI -> PA7
   gpioInitStruct.Pin = GPIO_PIN_5 | GPIO_PIN_7;
@@ -26,12 +27,18 @@ void spi_GPIO_config(void)
   gpioInitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   gpioInitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &gpioInitStruct);
-  // SPIO1 CS -> PA4
+  // SPI1 CS1 -> PA4
   gpioInitStruct.Pin = GPIO_PIN_4;
   gpioInitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   gpioInitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   gpioInitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &gpioInitStruct);
+  // SPIO1 CS2 -> PB1
+  gpioInitStruct.Pin = GPIO_PIN_1;
+  gpioInitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  gpioInitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  gpioInitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &gpioInitStruct);
 }
 
 bool spi_config(void)
@@ -45,7 +52,7 @@ bool spi_config(void)
   spi1Handle.Init.CLKPolarity = SPI_POLARITY_LOW; // Idle clock 'Low'
   spi1Handle.Init.CLKPhase = SPI_PHASE_1EDGE;
   spi1Handle.Init.NSS = SPI_NSS_SOFT; // Chip select by software
-  spi1Handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32; // Fclk=72Mhz -> 2 MHz
+  spi1Handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16; // Fclk=72Mhz -> 2 MHz
   spi1Handle.Init.FirstBit = SPI_FIRSTBIT_MSB;
   spi1Handle.Init.TIMode = SPI_TIMODE_DISABLE;
   spi1Handle.Init.CRCPolynomial = SPI_CRCCALCULATION_DISABLE;
@@ -58,11 +65,21 @@ bool spi_config(void)
 
 void spi_CS1_enable(void)
 {
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET); // Active Low 
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET); // Active Low
 }
 
 void spi_CS1_disable(void)
 {
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+}
+
+void spi_CS2_enable(void)
+{
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET); // Active Low
+}
+
+void spi_CS2_disable(void)
+{
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_SET); 
 }
 
