@@ -69,10 +69,10 @@ int main(void)
 	uint32_t numBlocks;
 	sd_driver_getSizeInfo(&blockSize, &numBlocks);
 	uint64_t totalSize;
-	totalSize = (uint64_t)numBlocks * (uint64_t)blockSize / (uint64_t)(2 * KB) ; // should be 134243093
-	printf("Total SD Card Size = %llu KB\n", totalSize);
-	printf("Total SD Card Size = %llu MB\n", totalSize / KB);
-	printf("Total SD Card Size = %llu GB\n", totalSize / MB);
+	totalSize = (uint64_t)numBlocks * (uint64_t)blockSize / (uint64_t)(KB) ; 
+	printf("Total SD Card Size = %llu KiB\n", totalSize);
+	printf("Total SD Card Size = %llu MiB\n", totalSize / KB);
+	printf("Total SD Card Size = %llu GiB\n", totalSize / MB);
 
 	//FatFs Lib
 	// FATFS* pFatFs;
@@ -91,12 +91,6 @@ int main(void)
 
 	/* Print the free space (assuming 512 bytes/sector) */
 	printf("%10lu KiB total drive space.\n%10lu KiB available.\n", totalSpace / 2, freeSpace / 2);
-
-  /* SD Card write file */
-	// f_open(&fil, "test.txt", FA_OPEN_ALWAYS | FA_WRITE | FA_READ);
-	// f_lseek(&fil, fil.fsize);
-	// f_puts("This is an example text to check SD Card Module with STM32 Blue Pill\n", &fil);
-	// f_close(&fil);
 
 	while (1)
 	{
