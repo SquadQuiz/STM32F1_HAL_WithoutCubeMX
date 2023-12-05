@@ -52,6 +52,8 @@ set(sources_SRCS
     ${PROJ_PATH}/Application/USB_MSC/usbd_conf.c
     ${PROJ_PATH}/Application/USB_MSC/usbd_desc.c
     ${PROJ_PATH}/Application/USB_MSC/usbd_storage_if.c
+    # FreeROTS
+    ${PROJ_PATH}/Application/RTOS/freertos.c
     # Core Source files
     ${PROJ_PATH}/Core/Src/main.c
     ${PROJ_PATH}/Core/Src/printf_redirect.c
@@ -101,6 +103,20 @@ set(sources_SRCS
     ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Core/Src/usbd_core.c
     ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c
     ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
+    # FreeRTOS
+    ${PROJ_PATH}/Middleware/FreeRTOS/croutine.c
+    ${PROJ_PATH}/Middleware/FreeRTOS/event_groups.c
+    ${PROJ_PATH}/Middleware/FreeRTOS/list.c
+    ${PROJ_PATH}/Middleware/FreeRTOS/queue.c
+    ${PROJ_PATH}/Middleware/FreeRTOS/stream_buffer.c
+    ${PROJ_PATH}/Middleware/FreeRTOS/tasks.c
+    ${PROJ_PATH}/Middleware/FreeRTOS/timers.c
+    # CMSIS_RTOS
+    ${PROJ_PATH}/Middleware/FreeRTOS/CMSIS_RTOS/cmsis_os.c
+    # portable/GCC/ARM_CM3
+    ${PROJ_PATH}/Middleware/FreeRTOS/portable/GCC/ARM_CM3/port.c
+    # portable/GCC/MemMang
+    ${PROJ_PATH}/Middleware/FreeRTOS/portable/MemMang/heap_4.c
     # Peripherals
     ${PROJ_PATH}/Peripherals/Src/adc.c
     ${PROJ_PATH}/Peripherals/Src/crc.c
@@ -125,12 +141,17 @@ set(include_path_DIRS
     # Put here your include dirs, one in each line, relative to CMakeLists.txt file location
     ${PROJ_PATH}/Application/MPU6050
     ${PROJ_PATH}/Application/RC522
+    ${PROJ_PATH}/Application/RTOS
     ${PROJ_PATH}/Application/SdCard
     ${PROJ_PATH}/Application/USB_MSC
     ${PROJ_PATH}/Core/Inc
     ${PROJ_PATH}/CMSIS/Include
     ${PROJ_PATH}/CMSIS/Device
     ${PROJ_PATH}/Middleware/FatFs
+    ${PROJ_PATH}/Middleware/FreeRTOS/CMSIS_RTOS
+    ${PROJ_PATH}/Middleware/FreeRTOS/include
+    ${PROJ_PATH}/Middleware/FreeRTOS/portable/GCC/ARM_CM3
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Class/MSC/Inc
     ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Class/MSC/Inc
     ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Core/Inc
     ${PROJ_PATH}/Peripherals/Inc

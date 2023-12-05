@@ -12,6 +12,7 @@
 
 //* Import External Variable
 extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
 
@@ -89,5 +90,10 @@ void tim_TIM4_ENCODER_GPIO_config(void);
  * @return true, false
  */
 bool tim_TIM4_ENCODER_config(void);
+
+/**
+ * @brief System Timebase
+ */
+bool tim_TIM2_config(void);
 
 #endif /* INC_TIM_H_ */

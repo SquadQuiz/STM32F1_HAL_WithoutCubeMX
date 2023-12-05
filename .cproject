@@ -56,6 +56,10 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Middleware\STM32_USB_Device_Library\Class\MSC\Inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Middleware\STM32_USB_Device_Library\Core\Inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Application\USB_MSC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Middleware\FreeRTOS\CMSIS_RTOS&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Middleware\FreeRTOS\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Middleware\FreeRTOS\portable\GCC\ARM_CM3&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Application\RTOS&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.337650406" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>

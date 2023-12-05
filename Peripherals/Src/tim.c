@@ -9,6 +9,7 @@
 
 //* Handle Typedef Global Variable
 TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 
@@ -266,4 +267,45 @@ bool tim_TIM4_ENCODER_config(void)
     return false;
   }
   return true;
+}
+
+bool tim_TIM2_config(void)
+{
+	 __HAL_RCC_TIM2_CLK_ENABLE();                                      // Enable TIM3 Clock
+	  //* Timer Clock = 72 MHz
+
+	  //* TIM3 Configuration
+	  htim2.Instance = TIM2;
+	  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;                      // Mode Counter Up
+	  htim2.Init.Period = 1000-1;                                       // 10 kHz = 0.1 ms or 100 us
+	  htim2.Init.Prescaler = 72 - 1;                       							// (0.1 mS x 10) = 1 ms -> msPeriod ms
+	  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;                // Division Clock with 1
+	  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;    // Disable Auto-reload Preload
+	  if(HAL_TIM_Base_Init(&htim2) != HAL_OK)                           // Init Timebase TIM3
+	  {
+	    return false;
+	  }
+
+	  //* Clock Source Configuration
+	  TIM_ClockConfigTypeDef clockSrcConfig = {0};
+	  clockSrcConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;            // Internal CLK from RCC
+	  if(HAL_TIM_ConfigClockSource(&htim2, &clockSrcConfig) != HAL_OK)
+	  {
+	    return false;
+	  }
+
+	  //* TIM3 as TRGO mode **
+	  TIM_MasterConfigTypeDef masterClockConfig = {0};
+	  masterClockConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;          // Signal Trigger to ADC to do Conversion
+	  masterClockConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;  // Disable Master/Slave mode
+	  if(HAL_TIMEx_MasterConfigSynchronization(&htim2, &masterClockConfig) != HAL_OK)
+	  {
+	    return false;
+	  }
+	  //* Enable TIM3 Interrupt
+	  HAL_NVIC_SetPriority(TIM2_IRQn, 5, 0);
+	  HAL_NVIC_EnableIRQ(TIM2_IRQn);
+
+	  HAL_TIM_Base_Start_IT(&htim2);
+	  return true;
 }
