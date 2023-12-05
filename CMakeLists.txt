@@ -47,6 +47,11 @@ set(sources_SRCS
     ${PROJ_PATH}/Application/SdCard/fatfs.c
     ${PROJ_PATH}/Application/SdCard/sd_driver.c
     ${PROJ_PATH}/Application/SdCard/user_diskio.c
+    # USB MSC
+    ${PROJ_PATH}/Application/USB_MSC/usb_device.c
+    ${PROJ_PATH}/Application/USB_MSC/usbd_conf.c
+    ${PROJ_PATH}/Application/USB_MSC/usbd_desc.c
+    ${PROJ_PATH}/Application/USB_MSC/usbd_storage_if.c
     # Core Source files
     ${PROJ_PATH}/Core/Src/main.c
     ${PROJ_PATH}/Core/Src/printf_redirect.c
@@ -66,6 +71,8 @@ set(sources_SRCS
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c
+    ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.c
+    ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c
@@ -77,11 +84,23 @@ set(sources_SRCS
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_usart.c
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
+    ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c
     # Middleware
     # FatFs
     ${PROJ_PATH}/Middleware/FatFs/diskio.c
     ${PROJ_PATH}/Middleware/FatFs/ff_gen_drv.c
     ${PROJ_PATH}/Middleware/FatFs/ff.c
+    # STM32_USB_Device_Library
+    # STM32_USB_Device_Library/Class
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_bot.c
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_data.c
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_scsi.c
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc.c
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc.c
+    # STM32_USB_Device_Library/Core
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Core/Src/usbd_core.c
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
     # Peripherals
     ${PROJ_PATH}/Peripherals/Src/adc.c
     ${PROJ_PATH}/Peripherals/Src/crc.c
@@ -107,10 +126,13 @@ set(include_path_DIRS
     ${PROJ_PATH}/Application/MPU6050
     ${PROJ_PATH}/Application/RC522
     ${PROJ_PATH}/Application/SdCard
+    ${PROJ_PATH}/Application/USB_MSC
     ${PROJ_PATH}/Core/Inc
     ${PROJ_PATH}/CMSIS/Include
     ${PROJ_PATH}/CMSIS/Device
     ${PROJ_PATH}/Middleware/FatFs
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Class/MSC/Inc
+    ${PROJ_PATH}/Middleware/STM32_USB_Device_Library/Core/Inc
     ${PROJ_PATH}/Peripherals/Inc
     ${PROJ_PATH}/HAL
     ${PROJ_PATH}/HAL/STM32F1xx_HAL_Driver/Inc

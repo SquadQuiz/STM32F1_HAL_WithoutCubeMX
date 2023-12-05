@@ -84,8 +84,9 @@ bool rcc_systemClockConfig(void)
 	}
 
 	//* Peripheral Clock Configuration
-	periphClockInit.PeriphClockSelection = RCC_PERIPHCLK_RTC;							// Enabled Peripheral clock -> RTC
-	periphClockInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;							// RTC Clock -> LSE
+	periphClockInit.PeriphClockSelection = RCC_PERIPHCLK_RTC | RCC_PERIPHCLK_USB;	// Enabled Peripheral clock -> RTC and USB
+	periphClockInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;											// RTC Clock -> LSE
+	periphClockInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;						  // USB Clk divided from ClkSrc = 72/1.5 = 48MHz
 	if(HAL_RCCEx_PeriphCLKConfig(&periphClockInit) != HAL_OK)
 	{
 		return false;

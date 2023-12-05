@@ -36,7 +36,10 @@ static void DESELECT(void)
 //SPI Transmit uint8_t
 static void SPI_TxByte(uint8_t data)
 {
-  while(HAL_SPI_GetState(&spi1Handle) != HAL_SPI_STATE_READY);
+	while (HAL_SPI_GetState(&spi1Handle) != HAL_SPI_STATE_READY)
+	{
+		; // wait
+	}
 	HAL_SPI_Transmit(&spi1Handle, &data, 1, SPI_TIMEOUT);
 }
 
@@ -45,9 +48,12 @@ static uint8_t SPI_RxByte(void)
 {
   uint8_t data=0, dummy = 0xFF;;
 
-  while(HAL_SPI_GetState(&spi1Handle) != HAL_SPI_STATE_READY);
-  HAL_SPI_TransmitReceive(&spi1Handle, &dummy, &data, 1, SPI_TIMEOUT);
-  return data;
+	while (HAL_SPI_GetState(&spi1Handle) != HAL_SPI_STATE_READY)
+	{
+		; // wait
+	}
+	HAL_SPI_TransmitReceive(&spi1Handle, &dummy, &data, 1, SPI_TIMEOUT);
+	return data;
 }
 
 //Receive by pointer

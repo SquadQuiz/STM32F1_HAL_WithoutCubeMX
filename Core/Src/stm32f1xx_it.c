@@ -12,6 +12,8 @@
 #include "rtc.h"
 #include "uart.h"
 
+extern PCD_HandleTypeDef hpcd_USB_FS;
+
 /**
  * @brief System Tick Handler.
  */
@@ -83,4 +85,20 @@ void DMA1_Channel5_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
 	HAL_UART_IRQHandler(&huart1);
+}
+
+/**
+ * @brief USB_HP_CAN_TX IRQ Handler.
+ */
+void USB_HP_CAN1_TX_IRQHandler(void)
+{
+	HAL_PCD_IRQHandler(&hpcd_USB_FS);
+}
+
+/**
+ * @brief USB_LP_CAN1_RX0 IRQ Handler.
+ */
+void USB_LP_CAN1_RX0_IRQHandler(void)
+{
+	HAL_PCD_IRQHandler(&hpcd_USB_FS);
 }
