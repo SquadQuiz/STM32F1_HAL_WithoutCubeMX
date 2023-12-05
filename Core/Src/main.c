@@ -79,7 +79,7 @@ int main(void)
 	DWORD clusterCount;
 	uint32_t totalSpace, freeSpace;
 
-	/* Get volume information and free clusters of drive 1 */
+	/* Get volume information and free clusters of drive */
 	fresult = f_getfree("", &clusterCount, &pFatFs);
 	if (fresult != FR_OK) {
 		printf("Something wrong, Error code : 0x%02X\n", fresult);
@@ -91,6 +91,37 @@ int main(void)
 
 	/* Print the free space (assuming 512 bytes/sector) */
 	printf("%10lu KiB total drive space.\n%10lu KiB available.\n", totalSpace / 2, freeSpace / 2);
+
+	// Open file
+	fresult = f_open(&fil, "Testfile.txt", FA_CREATE_ALWAYS | FA_WRITE | FA_READ);
+	if (fresult != FR_OK) {
+		printf("Failed to open file, Error code : 0x%02X\n", fresult);
+  }
+	else {
+		printf("Successfully opened file!\n");
+	}
+
+	// Write text file to SD Card
+	f_puts("This is HAL library test ...\n", &fil); // don't forget to add \n new line character
+	printf("Data is complete written to file\n");
+
+	// Read data back from text file
+	f_lseek(&fil, 0); // line seek, this will move file pointer to begin of file
+	char readData[50]; // this array for stored string read from file
+	UINT readSize = 0; // for stored exactly string data size
+	fresult = f_read(&fil, readData, 50, &readSize); // read 50 character from file
+		if (fresult != FR_OK) {
+		printf("Failed to read file, Error code : 0x%02X\n", fresult);
+  }
+	else {
+		printf("Successfully read file!, size = %d\n", readSize);
+	}
+	readData[readSize] = 0; // force last character in array to null terminate
+	printf("File read content: \n");
+	printf(readData); // print data inside the file
+
+	// Close file
+	f_close(&fil);
 
 	while (1)
 	{
