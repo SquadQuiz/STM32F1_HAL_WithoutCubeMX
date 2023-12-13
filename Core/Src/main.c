@@ -22,16 +22,11 @@
 #include "fatfs.h"
 #include "sd_driver.h"
 #include "usb_device.h"
-#include "cmsis_os.h"
+// #include "cmsis_os.h" 
+#include "wav_recorder.h"
 
-// Thread1
-osThreadId thread1Handle;
-void Thread1Callback(void const* argument);
-
-// Thread2
-osThreadId thread2Handle;
-void Thread2Callback(void const* argument);
-
+FATFS fs;
+FRESULT fresult;
 
 int main(void)
 {
@@ -49,57 +44,74 @@ int main(void)
 	gpio_LED_config();
 	gpio_PB_config();
 
-	//* Timebase will use Timer2
-	tim_TIM2_config();
+	//* SD Card on SPI
+	spi_GPIO_config();
+	spi_config();
+	MX_FATFS_Init();
 
-	//* FreeRTOS Initialization
+	fresult = f_mount(&fs, "", 1);
+	if (fresult != FR_OK)
+	{
+		printf("Failed to mount SD Card to FatFs\n");
+	}
+	else
+	{
+		printf("Successfully Mounted SD Card\n");
+	}
 
-	// Thread1
-	osThreadDef(Thread1, Thread1Callback, osPriorityNormal, 0, 128);
-	thread1Handle = osThreadCreate(osThread(Thread1), NULL);
+	// ADC
+	adc_GPIO_config();
+	adc_MIC_config();
+	// ADC DMA
+	adc_dma_config();
+	// TIM3
+	tim_TIM3_config(0);
 
-	// Thread2
-	osThreadDef(Thread2, Thread2Callback, osPriorityNormal, 0, 128);
-	thread2Handle = osThreadCreate(osThread(Thread2), NULL);
-
-	// Start Scheduler
-	osKernelStart();
+	uint32_t timeout = HAL_GetTick();
+	bool recflag = 0;
 
 	while (1)
 	{
-
+		HAL_Delay(500);
+		if (!recflag)
+		{
+			// WAV Init
+			if (wav_recorder_fileCreate("RECORD.WAV"))
+			{
+				printf("WAV File created successfully\n");
+			}
+			else
+			{
+				printf("File creation failed\n");
+			}
+			HAL_Delay(1000);
+			// Start recording
+			wav_recorder_record();
+			gpio_LED_writeGreen(1);
+			printf("Recording Started\n");
+			while(!wav_recorder_isFinished())
+			{
+				wav_recorder_process();
+				if (HAL_GetTick() > timeout + 5000)
+				{
+					wav_recorder_stop();
+					wav_recorder_process();
+					printf("Recording Stopped\n");
+				}
+			}
+			gpio_LED_writeGreen(0);
+			recflag = 1;
+		}
 	}
 }
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc)
 {
-	if (htim->Instance == TIM2)
-	{
-		HAL_IncTick(); // now HAL_Delay() will use Timer2
-	}
+	wavRecorder_halfTransfer_Callback();
 }
 
-// Thread1 function
-void Thread1Callback(void const* argument)
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
-	// Super loop for thread1
-	while(1)
-	{
-		gpio_LED_toggleGreen();
-		printf("Thread1 Blinking!\n");
-//		HAL_Delay(1000);
-		osDelay(500);
-	}
+	wavRecorder_fullTransfer_Callback();
 }
 
-// Thread2 function
-void Thread2Callback(void const* argument)
-{
-	// Super loop for thread2
-	while(1)
-	{
-		gpio_LED_toggleGreen();
-		printf("Thread2 ...!\n");
-		osDelay(100);
-	}
-}

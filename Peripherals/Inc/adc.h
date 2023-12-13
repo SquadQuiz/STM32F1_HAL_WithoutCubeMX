@@ -76,6 +76,9 @@ bool adc_AWDG_config(ADC_SingleSelect_e channel);
  */
 bool adc_Injected_config(ADC_SingleSelect_e channel);
 
+/**
+ * @brief MIC ADC Config
+ */
+bool adc_MIC_config(void);
+
 #endif /* INC_ADC_H_ */
-
-

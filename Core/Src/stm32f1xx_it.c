@@ -18,10 +18,10 @@ extern PCD_HandleTypeDef hpcd_USB_FS;
  * @brief System Tick Handler.
  * Now FreeRTOS using Systick System
  */
-//void SysTick_Handler(void)
-//{
-//	HAL_IncTick();
-//}
+void SysTick_Handler(void)
+{
+	HAL_IncTick();
+}
 
 /**
  * @brief GPIO EXTI0 IRQ Handler.

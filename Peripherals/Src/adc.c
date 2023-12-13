@@ -17,6 +17,7 @@ void adc_GPIO_config(void)
    * Potentiometer -> PA1
    * Joystick-X    -> PA2
    * Joystick-Y    -> PA3
+   * Microphone 	 -> PA3
   */  
 
   GPIO_InitTypeDef gpioInitStruct = {0};
@@ -177,5 +178,35 @@ bool adc_Injected_config(ADC_SingleSelect_e channel)
     return false;
   }
 
+  return true;
+}
+
+bool adc_MIC_config(void)
+{
+  __HAL_RCC_ADC1_CLK_ENABLE();                                     // Enable ADC1 Clock
+  //* ADC Configuration
+  adc1Handle.Instance = ADC1;                                      // adc1Handle -> ADC1
+  adc1Handle.Init.DataAlign = ADC_DATAALIGN_RIGHT;                 // Data Align Right
+  adc1Handle.Init.ScanConvMode = ADC_SCAN_ENABLE;                  // Enable Scan mode
+  adc1Handle.Init.ContinuousConvMode = DISABLE;                    // Disable Continuous Conversion
+  adc1Handle.Init.NbrOfConversion = 1;                             // Number of conversion = 1
+  adc1Handle.Init.DiscontinuousConvMode = DISABLE;                 // Disable Discontinuous Conversion
+  adc1Handle.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T3_TRGO; // External Trigger via TIM3
+  if(HAL_ADC_Init(&adc1Handle) != HAL_OK)
+  {
+    return false;
+  }
+
+  //* ADC Channel Configuration
+  ADC_ChannelConfTypeDef channelConfig = {0}; 
+  //* Channel3 PA3
+  channelConfig.Channel = ADC_CHANNEL_3;                      // Microphone
+  channelConfig.Rank = 1;                                     // Rank = 1
+  channelConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;     // Sampling Time = 28.5 Cycles
+  if(HAL_ADC_ConfigChannel(&adc1Handle, &channelConfig) != HAL_OK)
+  {
+    return false;
+  }
+  
   return true;
 }

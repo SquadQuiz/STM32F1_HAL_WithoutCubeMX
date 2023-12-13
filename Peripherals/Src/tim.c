@@ -18,11 +18,13 @@ bool tim_TIM3_config(uint32_t msPeriod)
   __HAL_RCC_TIM3_CLK_ENABLE();                                      // Enable TIM3 Clock
   //* Timer Clock = 72 MHz
 
+  // Audio sampling frequency as 44.1 KHz
+
   //* TIM3 Configuration
   htim3.Instance = TIM3;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;                      // Mode Counter Up
-  htim3.Init.Period = 7200-1;                                       // 10 kHz = 0.1 ms or 100 us
-  htim3.Init.Prescaler = (msPeriod * 10) - 1;                       // (0.1 mS x 10) = 1 ms -> msPeriod ms
+  htim3.Init.Period = 1632-1;                                       // 44.1 KHz
+  htim3.Init.Prescaler = 0;                       									//
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;                // Division Clock with 1
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;    // Disable Auto-reload Preload
   if(HAL_TIM_Base_Init(&htim3) != HAL_OK)                           // Init Timebase TIM3

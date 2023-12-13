@@ -60,6 +60,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Middleware\FreeRTOS\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Middleware\FreeRTOS\portable\GCC\ARM_CM3&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Application\RTOS&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}\Application\WAV_Recorder&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.337650406" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -86,11 +87,11 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Application"/>
+						<entry excluding="RTOS" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Application"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="CMSIS"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="HAL"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Middleware"/>
+						<entry excluding="FreeRTOS" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Middleware"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Peripherals"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
 					</sourceEntries>
